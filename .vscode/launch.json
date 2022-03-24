@@ -1,0 +1,21 @@
+{
+// Debugger Tool for Firefox has to be installed: https://github.com/firefox-devtools/vscode-firefox-debug
+// And Remote has to be enabled: https://developer.mozilla.org/en-US/docs/Tools/Remote_Debugging/Debugging_Firefox_Desktop#enable_remote_debugging
+"version": "0.2.0",
+"configurations": [
+      {
+         "type": "firefox",
+         "request": "launch",
+         "name": "Firefox Debug",
+         "url": "http://localhost:3000",
+         "webRoot": "${workspaceFolder}",
+         "enableCRAWorkaround": true,
+         "reAttach": true,
+         "reloadOnAttach": true,
+         "reloadOnChange": {
+            "watch": "${workspaceFolder}/**/*.ts",
+            "ignore": "**/node_modules/**"
+         }
+      }
+]
+}
