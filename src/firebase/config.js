@@ -4,11 +4,11 @@ import "firebase/auth";
 
 const firebaseConfig = {
 	apiKey: process.env.API_KEY,
-	authDomain: "",
-	projectId: "",
-	storageBucket: "",
-	messagingSenderId: process.env.MESSAGING_SENDER_ID,
-	appId: process.env.APP_ID,
+	authDomain: "managify-389f8.firebaseapp.com",
+	projectId: "managify-389f8",
+	storageBucket: "managify-389f8.appspot.com",
+	messagingSenderId: "838086409515",
+	appId: "1:838086409515:web:337720a4d254fcb1bf596e",
 };
 
 firebase.initializeApp(firebaseConfig);
