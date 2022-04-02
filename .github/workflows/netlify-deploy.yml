@@ -1,0 +1,29 @@
+name: Netlify Deploy
+
+on: [push]
+
+jobs:
+   publishMasterCommit:
+      name: Publish to Netlify
+      runs-on: ubuntu-latest
+      if: github.event_name == 'push' && github.ref == 'refs/heads/master'
+      steps:
+         - name: Checkout repository
+           uses: actions/checkout@v1
+         - name: Create env file
+           run: |
+              touch .env
+              echo FIREBASE_API_KEY=${{ secrets.FIREBASE_API_KEY }} >> .env
+              cat .env
+         - name: Use Node.js ${{ matrix.node-version }}
+           uses: actions/setup-node@v2
+           with:
+              node-version: ${{ matrix.node-version }}
+              cache: "npm"
+         - run: npm ci
+         - run: npm run build --if-present
+         - name: "Deploy to Netlify"
+         - uses: jsmrcaga/action-netlify-deploy@v1.1.0
+           with:
+              NETLIFY_AUTH_TOKEN: ${{ secrets.NETLIFY_AUTH_TOKEN }}
+              NETLIFY_SITE_ID: ${{ secrets.NETLIFY_SITE_ID }}
