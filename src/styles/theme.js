@@ -18,7 +18,7 @@ const theme = {
       xxl: '@media (max-width: 1400px)',
    },
    fonts: {
-      poppins: "'Poppins', sans-serif",
+      lato: "'Lato', sans-serif",
       nunito: "'Nunito', sans-serif",
    },
 };
