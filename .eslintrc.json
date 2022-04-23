@@ -21,7 +21,7 @@
     "rules": {
         "indent": [
             "warn",
-            "space"
+            3
         ],
         "linebreak-style": [
             "warn",
