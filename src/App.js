@@ -1,26 +1,43 @@
 import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import 'reset-css';
+import 'react-toastify/dist/ReactToastify.css';
+import './styles/app.scss';
 
-function App() {
+import styled from 'styled-components';
+import { ToastContainer } from 'react-toastify';
+import { ThemeProvider } from 'react-bootstrap';
+import { BrowserRouter, Route, Redirect, Switch } from 'react-router-dom';
+
+import Auth from './auth/Auth';
+
+const Main = styled.main`
+   width: 100%;
+`;
+
+const App = () => {
    return (
-      <div className="App">
-         <header className="App-header">
-            <img src={logo} className="App-logo" alt="logo" />
-            <p>
-               Edit <code>src/App.js</code> and save to reload.
-            </p>
-            <a
-               className="App-link"
-               href="https://reactjs.org"
-               target="_blank"
-               rel="noopener noreferrer"
-            >
-               Learn React
-            </a>
-         </header>
-      </div>
+      <ThemeProvider breakpoints={['xxl', 'xl', 'lg', 'md', 'sm', 'xs']}>
+         <Main>
+            <BrowserRouter>
+               <Switch>
+                  <Route path="/" component={Auth} exact />
+                  <Redirect to="/" />
+               </Switch>
+               <ToastContainer
+                  position="bottom-right"
+                  autoClose={2000}
+                  hideProgressBar={false}
+                  newestOnTop={false}
+                  closeOnClick
+                  rtl={false}
+                  pauseOnFocusLoss={false}
+                  draggable={false}
+                  pauseOnHover
+               />
+            </BrowserRouter>
+         </Main>
+      </ThemeProvider>
    );
-}
+};
 
 export default App;
