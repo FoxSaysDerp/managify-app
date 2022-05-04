@@ -1,5 +1,7 @@
+import { createTheme } from '@mui/material';
+
 /* eslint-disable quotes */
-const theme = {
+export const themeStyle = {
    color: {
       main: '#ebb941',
       black: '#1b1b1b',
@@ -23,4 +25,17 @@ const theme = {
    },
 };
 
-export default theme;
+export const theme = createTheme({
+   palette: {
+      type: 'light',
+      primary: {
+         main: '#ffb300',
+      },
+      secondary: {
+         main: '#b878a0',
+      },
+      warning: {
+         main: '#f3f598',
+      },
+   },
+});
