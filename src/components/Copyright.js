@@ -10,7 +10,7 @@ const Copyright = (props) => {
          {...props}
       >
          {'Copyright © '}
-         <Link component={Link} color="inherit" to="/">
+         <Link component={RouterLink} color="inherit" to="/">
             Managify
          </Link>{' '}
          {new Date().getFullYear()}

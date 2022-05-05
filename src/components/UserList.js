@@ -26,6 +26,7 @@ const UserList = () => {
    const users = DUMMY_USERS();
    console.log(users);
 
+   /* eslint-disable */
    const StatusBadge = styled(Badge)`
       > span {
          background-color: ${available};
@@ -37,6 +38,7 @@ const UserList = () => {
          background-color: ${offline};
       }`}
    `;
+   /* eslint-enable */
 
    useEffect(() => {
       if (users.isLoaded) {

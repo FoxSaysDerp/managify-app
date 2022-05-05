@@ -40,12 +40,8 @@ const Dev = () => {
                   <List>
                      {routes.map((route, index) => {
                         return (
-                           <ListItem disablePadding>
-                              <ListItemButton
-                                 component={Link}
-                                 to={route.path}
-                                 key={index}
-                              >
+                           <ListItem disablePadding key={index}>
+                              <ListItemButton component={Link} to={route.path}>
                                  <ListItemText primary={route.name} />
                                  <code>{route.path}</code>
                               </ListItemButton>
