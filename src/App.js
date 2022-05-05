@@ -1,28 +1,91 @@
-import React from 'react';
-import 'reset-css';
-import 'react-toastify/dist/ReactToastify.css';
+import React, { useCallback, useEffect, useState } from 'react';
 import './styles/app.scss';
+
+import { theme } from './styles/theme';
+import { DashboardContext } from './context/dashboard-context';
 
 import styled from 'styled-components';
 import { ToastContainer } from 'react-toastify';
-import { ThemeProvider } from 'react-bootstrap';
-import { BrowserRouter, Route, Redirect, Switch } from 'react-router-dom';
 
-import Auth from './auth/Auth';
+import { ThemeProvider } from '@mui/material/styles';
+
+import { Route, Redirect, Switch, useLocation } from 'react-router-dom';
+import { dashboardNav } from './constants/dashboardNav';
+
+import Dashboard from './components/Dashboard';
+import ModuleTitle from './components/ModuleTitle';
+
+import routes from './routes/routes';
 
 const Main = styled.main`
    width: 100%;
 `;
 
 const App = () => {
+   const [isDashboardMode, setIsDashboardMode] = useState(false);
+   const [isMenuExpanded, setIsMenuExpanded] = useState(true);
+
+   const currentLocation = useLocation();
+
+   const dashboardLocations = dashboardNav.map(({ link }) => link);
+
+   const currentLocationName = dashboardNav.find(
+      (item) => item.link === currentLocation.pathname
+   );
+
+   console.log(currentLocationName);
+
+   useEffect(() => {
+      if (dashboardLocations.includes(currentLocation.pathname)) {
+         setIsDashboardMode(true);
+         console.log(isDashboardMode);
+      }
+   }, []);
+
    return (
-      <ThemeProvider breakpoints={['xxl', 'xl', 'lg', 'md', 'sm', 'xs']}>
-         <Main>
-            <BrowserRouter>
-               <Switch>
-                  <Route path="/" component={Auth} exact />
-                  <Redirect to="/" />
-               </Switch>
+      <DashboardContext.Provider
+         value={{
+            isDashboardMode,
+            isMenuExpanded,
+            expandMenu: useCallback(() => {
+               setIsMenuExpanded((prevState) => !prevState);
+            }),
+         }}
+      >
+         <ThemeProvider theme={theme}>
+            <Main>
+               {isDashboardMode ? (
+                  <Dashboard>
+                     <ModuleTitle title={currentLocationName.label} />
+                     <Switch>
+                        {routes.map((route, index) => {
+                           return (
+                              <Route
+                                 path={route.path}
+                                 component={route.component}
+                                 exact
+                                 key={index}
+                              />
+                           );
+                        })}
+                        <Redirect to="/" />
+                     </Switch>
+                  </Dashboard>
+               ) : (
+                  <Switch>
+                     {routes.map((route, index) => {
+                        return (
+                           <Route
+                              path={route.path}
+                              component={route.component}
+                              exact
+                              key={index}
+                           />
+                        );
+                     })}
+                     <Redirect to="/" />
+                  </Switch>
+               )}
                <ToastContainer
                   position="bottom-right"
                   autoClose={2000}
@@ -34,9 +97,9 @@ const App = () => {
                   draggable={false}
                   pauseOnHover
                />
-            </BrowserRouter>
-         </Main>
-      </ThemeProvider>
+            </Main>
+         </ThemeProvider>
+      </DashboardContext.Provider>
    );
 };
 
