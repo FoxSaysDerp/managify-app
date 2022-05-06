@@ -2,10 +2,15 @@ import React, { useEffect, useState } from 'react';
 import { Autocomplete, Box, Button, Grid, Paper, Stack, TextField } from '@mui/material';
 
 
-const TaskForm = () => {
+const TaskForm = ({task, onSubmit, editable = false}) => {
    const [users, setUsers] = useState([]);
    const [owner, setOwner] = useState(null);
    const [assigned, setAssigned] = useState(null);
+
+   useEffect(()=> {
+      if(task.owner) setOwner(task.owner);
+      if(task.assigned) setAssigned(task.assigned);
+   },[]);
 
    useEffect(() => {
       setUsers(['Tim', 'Kira']);
@@ -14,19 +19,18 @@ const TaskForm = () => {
    const handleSubmit = (event) => {
       event.preventDefault();
       const data = new FormData(event.currentTarget);
-      const form = {
+      const task = {
          title: data.get('title'),
          desc: data.get('desc'),
          owner: owner,
          assigned: assigned,
       };
-      console.log(form);
+      onSubmit(task);
    };
 
    return (
       <Box
          component="form"
-         noValidate
          onSubmit={handleSubmit} 
       >
          <Grid container spacing={3}>
@@ -34,9 +38,7 @@ const TaskForm = () => {
                <Stack spacing={3}>
                   <Paper
                      sx={{
-                        p: 2,
-                        display: 'flex',
-                        flexDirection: 'column'w
+                        p: 2
                      }}
                   >
                      <TextField
@@ -49,13 +51,12 @@ const TaskForm = () => {
                         name="title"
                         autoComplete="Task title"
                         autoFocus
+                        disabled={!editable}
                      />
                   </Paper>
                   <Paper
                      sx={{
                         p: 2,
-                        display: 'flex',
-                        flexDirection: 'column',
                         minHeight: 300
                      }}
                   >
@@ -71,6 +72,7 @@ const TaskForm = () => {
                         name="desc"
                         autoComplete="Task description"
                         autoFocus
+                        disabled={!editable}
                      />
                   </Paper>
                </Stack>
@@ -79,26 +81,27 @@ const TaskForm = () => {
                <Stack spacing={3} sx={{height: '100%'}}>
                   <Paper
                      sx={{
-                        p: 2,
-                        display: 'flex',
-                        flexDirection: 'column'
+                        p: 2
                      }}
                   >
                      <Autocomplete
-                        variant='standard'
                         disablePortal
                         id="owner" 
                         value={owner}
                         onChange={(e, value) => {setOwner(value);}}
                         options={users}
-                        renderInput={(params) => <TextField {...params} label="Reports to" />}
+                        disabled={!editable}
+                        renderInput={(params) => 
+                           <TextField 
+                              variant='standard'
+                              margin="normal"
+                              {...params} 
+                              label="Reports to" />}
                      />
                   </Paper>
                   <Paper
                      sx={{
-                        p: 2,
-                        display: 'flex',
-                        flexDirection: 'column'
+                        p: 2
                      }}
                   >
                      <Autocomplete
@@ -108,16 +111,22 @@ const TaskForm = () => {
                         value={assigned}
                         onChange={(e, value) => {setAssigned(value);}}
                         options={users}
-                        renderInput={(params) => <TextField {...params} label="Assigned" />}
+                        disabled={!editable}
+                        renderInput={(params) => 
+                           <TextField 
+                              variant='standard'
+                              margin="normal"
+                              {...params} 
+                              label="Assigned" />}
                      />
                   </Paper>
-                  <Button
+                  {editable && <Button
                      type="submit"
                      variant="contained"
                      sx={{ mt: 'auto !important', py: 2, px: 5, width: 1 }}
                   >
                     Save
-                  </Button>
+                  </Button>}
                </Stack>
             </Grid>
          </Grid>

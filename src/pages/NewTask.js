@@ -9,14 +9,16 @@ import TaskForm from '../components/TaskForm';
 
 
 const NewTask = () => {
-
+   const handleSubmit = (task) => {
+      console.log(task);
+   };
 
    return (
       <Main>
          <Grid container spacing={3}>
             <Grid item xs={12} md={8} lg={9}>
                <Paper sx={{ p:2 }}>
-                  <TaskForm/>
+                  <TaskForm task={{assigned:'Tim'}} editable onSubmit={handleSubmit}/>
                </Paper>
                
             </Grid>
