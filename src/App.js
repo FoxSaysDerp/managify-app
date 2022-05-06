@@ -34,6 +34,7 @@ const App = () => {
    );
 
    console.log(currentLocationName);
+   console.log(dashboardLocations);
 
    useEffect(() => {
       if (dashboardLocations.includes(currentLocation.pathname)) {
