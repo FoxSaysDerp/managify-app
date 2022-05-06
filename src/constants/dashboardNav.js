@@ -20,7 +20,7 @@ export const dashboardNav = [
    },
    {
       icon: <FolderSharedIcon />,
-      link: '/tasks/:uid',
+      link: '/tasks/user',
       label: 'My tasks',
    },
    {
@@ -43,7 +43,11 @@ export const dashboardNav = [
 export const dashboardNavSecondary = [
    {
       icon: (
-         <LogoutIcon sx={{ transform: 'rotate(180deg) translateX(-5px)' }} />
+         <LogoutIcon
+            sx={{
+               transform: 'rotate(180deg) translateX(2px)',
+            }}
+         />
       ),
       link: '/logout',
       label: 'Logout',
@@ -54,7 +58,7 @@ export const dashboardNavDev = [
    {
       icon: <ConstructionIcon />,
       link: '/dev',
-      label: 'Admin',
+      label: 'Dev Tools',
       chip: {
          color: 'error',
          label: 'DEV',

@@ -21,7 +21,7 @@ const Dev = () => {
             container
             sx={{
                justifyContent: 'center',
-               minHeight: '100vh',
+               minHeight: '80vh',
                alignItems: 'center',
                flexDirection: 'column',
             }}

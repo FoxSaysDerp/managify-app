@@ -48,6 +48,8 @@ const App = () => {
          setIsDashboardMode(true);
          console.log(isDashboardMode);
          console.log(location);
+      } else {
+         setIsDashboardMode(false);
       }
    }, [isDashboardMode, location]);
 
