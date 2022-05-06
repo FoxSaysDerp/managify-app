@@ -3,6 +3,7 @@ import App from './App';
 import { BrowserRouter } from 'react-router-dom';
 
 import 'antd/dist/antd.css';
+
 import 'react-toastify/dist/ReactToastify.css';
 import { CssBaseline } from '@mui/material';
 
