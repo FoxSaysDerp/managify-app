@@ -8,6 +8,7 @@
     "@mui/icons-material": "^5.6.2",
     "@mui/material": "^5.6.4",
     "@mui/styled-engine-sc": "^5.6.1",
+    "@mui/x-data-grid": "^5.10.0",
     "@testing-library/jest-dom": "^5.16.3",
     "@testing-library/react": "^12.1.4",
     "@testing-library/user-event": "^13.5.0",
@@ -51,8 +52,12 @@
     ]
   },
   "devDependencies": {
+    "css-loader": "^6.7.1",
     "eslint": "^8.11.0",
-    "eslint-plugin-react": "^7.29.4"
+    "eslint-plugin-react": "^7.29.4",
+    "less": "^4.1.2",
+    "less-loader": "^10.2.0",
+    "style-loader": "^3.3.1"
   },
   "prettier": {
     "singleQuote": true,
