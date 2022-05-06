@@ -161,6 +161,7 @@ const Dashboard = (props) => {
                            to={item.link}
                            key={index}
                            sx={{ px: 2, py: 1, m: 1, borderRadius: '18px' }}
+                           exact
                         >
                            <ListItemIcon>{item.icon}</ListItemIcon>
                            <ListItemText primary={item.label} />
@@ -174,6 +175,8 @@ const Dashboard = (props) => {
                            component={RouterLink}
                            to={item.link}
                            key={index}
+                           sx={{ px: 2, py: 1, m: 1, borderRadius: '18px' }}
+                           exact
                         >
                            <ListItemIcon>{item.icon}</ListItemIcon>
 
@@ -188,6 +191,7 @@ const Dashboard = (props) => {
                            component={RouterLink}
                            to={item.link}
                            key={index}
+                           sx={{ px: 2, py: 1, m: 1, borderRadius: '18px' }}
                         >
                            <ListItemIcon>{item.icon}</ListItemIcon>
 
