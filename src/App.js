@@ -1,5 +1,5 @@
 import React, { useCallback, useEffect, useState } from 'react';
-import './styles/app.scss';
+import './styles/app.css';
 
 import { theme } from './styles/theme';
 import { DashboardContext } from './context/dashboard-context';
@@ -9,7 +9,13 @@ import { ToastContainer } from 'react-toastify';
 
 import { ThemeProvider } from '@mui/material/styles';
 
-import { Route, Redirect, Switch, useLocation } from 'react-router-dom';
+import {
+   Route,
+   Redirect,
+   Switch,
+   useLocation,
+   withRouter,
+} from 'react-router-dom';
 import { dashboardNav } from './constants/dashboardNav';
 
 import Dashboard from './components/Dashboard';
@@ -25,22 +31,27 @@ const App = () => {
    const [isDashboardMode, setIsDashboardMode] = useState(false);
    const [isMenuExpanded, setIsMenuExpanded] = useState(true);
 
-   const currentLocation = useLocation();
+   const location = useLocation();
 
    const dashboardLocations = dashboardNav.map(({ link }) => link);
 
-   const currentLocationName = dashboardNav.find(
-      (item) => item.link === currentLocation.pathname
+   let currentLocationName;
+   currentLocationName = dashboardNav.find(
+      (item) => item.link === location.pathname
    );
-
-   console.log(currentLocationName);
+   if (typeof currentLocationName === 'undefined') {
+      currentLocationName = 'Unknown location';
+   }
 
    useEffect(() => {
-      if (dashboardLocations.includes(currentLocation.pathname)) {
+      if (dashboardLocations.includes(location.pathname)) {
          setIsDashboardMode(true);
          console.log(isDashboardMode);
+         console.log(location);
+      } else {
+         setIsDashboardMode(false);
       }
-   }, []);
+   }, [isDashboardMode, location]);
 
    return (
       <DashboardContext.Provider
@@ -72,19 +83,21 @@ const App = () => {
                      </Switch>
                   </Dashboard>
                ) : (
-                  <Switch>
-                     {routes.map((route, index) => {
-                        return (
-                           <Route
-                              path={route.path}
-                              component={route.component}
-                              exact
-                              key={index}
-                           />
-                        );
-                     })}
-                     <Redirect to="/" />
-                  </Switch>
+                  <React.Fragment>
+                     <Switch>
+                        {routes.map((route, index) => {
+                           return (
+                              <Route
+                                 path={route.path}
+                                 component={route.component}
+                                 exact
+                                 key={index}
+                              />
+                           );
+                        })}
+                        <Redirect to="/login" />
+                     </Switch>
+                  </React.Fragment>
                )}
                <ToastContainer
                   position="bottom-right"
@@ -103,4 +116,4 @@ const App = () => {
    );
 };
 
-export default App;
+export default withRouter(App);

@@ -22,7 +22,8 @@
     "rules": {
         "indent": [
             "warn",
-            3
+            3,
+            { "SwitchCase": 1 }
         ],
         "linebreak-style": [0],
         "react/react-in-jsx-scope": "off",
