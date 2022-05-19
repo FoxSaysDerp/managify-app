@@ -19,11 +19,13 @@ jobs:
            uses: actions/setup-node@v2
            with:
               node-version: ${{ matrix.node-version }}
-              cache: "npm"
+              cache: 'npm'
          - run: npm ci
          - run: npm run build --if-present
-         - name: "Deploy to Netlify"
+         - name: 'Deploy to Netlify'
            uses: jsmrcaga/action-netlify-deploy@v1.1.0
            with:
               NETLIFY_AUTH_TOKEN: ${{ secrets.NETLIFY_AUTH_TOKEN }}
               NETLIFY_SITE_ID: ${{ secrets.NETLIFY_SITE_ID }}
+              NETLIFY_DEPLOY_MESSAGE: 'Production deploy v${{ github.ref }}'
+              NETLIFY_DEPLOY_TO_PROD: true
