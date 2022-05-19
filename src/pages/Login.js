@@ -111,14 +111,14 @@ const Login = () => {
                            Don&apos;t have an account?{' '}
                            <Link
                               component={RouterLink}
-                              to="/dev"
+                              to="/signup"
                               variant="body2"
                            >
                               {'Sign Up'}
                            </Link>
                         </Grid>
                      </Grid>
-                     <Copyright />
+                     <Copyright sx={{ mt: 3 }} />
                   </Box>
                </Box>
             </Grid>
