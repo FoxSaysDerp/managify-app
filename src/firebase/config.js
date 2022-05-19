@@ -1,9 +1,9 @@
-import firebase from 'firebase/app';
-import 'firebase/firestore';
-import 'firebase/auth';
+import firebase from 'firebase/compat/app';
+import 'firebase/compat/firestore';
+import 'firebase/compat/auth';
 
 const firebaseConfig = {
-   apiKey: process.env.API_KEY,
+   apiKey: process.env.REACT_APP_FIREBASE_API,
    authDomain: 'managify-389f8.firebaseapp.com',
    projectId: 'managify-389f8',
    storageBucket: 'managify-389f8.appspot.com',
