@@ -1,6 +1,8 @@
+import { useState, useMemo } from 'react';
 import { Link as RouterLink } from 'react-router-dom';
-
 import { useForm } from 'react-hook-form';
+import { useSignup } from '../hooks/useSignup';
+import { toast } from 'react-toastify';
 
 import {
    Avatar,
@@ -21,21 +23,49 @@ import Main from '../styles/Main';
 import Copyright from '../components/Copyright';
 
 const Signup = () => {
+   const [avatarErrors, setAvatarErrors] = useState([]);
    const {
       register,
       handleSubmit,
       watch,
       formState: { errors },
    } = useForm();
+   const { signup, isPending, error } = useSignup();
+
+   const ONE_MEGABYTE = 1024 * 1024;
+
+   const ALLOWED_TYPES = ['image/jpeg', 'image/jpg', 'image/png'];
 
    const onSubmit = (data) => {
       console.log(data);
+      signup(data.email, data.password, data.displayName, data.avatar[0]);
    };
 
-   console.log(watch('displayName'));
-   console.log(watch('email'));
-   console.log(watch('password'));
-   console.log(errors);
+   // console.log(watch('displayName'));
+   // console.log(watch('email'));
+   // console.log(watch('password'));
+   // console.log('errors', errors);
+
+   const avatarInput = watch('avatar');
+
+   const avatarInputChecker = () => {
+      setAvatarErrors([]);
+      if (avatarInput && avatarInput[0]) {
+         if (avatarInput[0].size > ONE_MEGABYTE) {
+            setAvatarErrors([...avatarErrors, 'Avatar is too large.']);
+         }
+
+         if (!ALLOWED_TYPES.includes(avatarInput[0].type)) {
+            setAvatarErrors([...avatarErrors, 'Avatar has an invalid type.']);
+         }
+      }
+   };
+
+   useMemo(() => {
+      avatarInputChecker();
+      console.log(avatarInput);
+      console.log(avatarErrors);
+   }, [avatarInput]);
 
    return (
       <Main>
@@ -137,29 +167,67 @@ const Signup = () => {
                            characters.
                         </Alert>
                      )}
-                     <label htmlFor="contained-button-file">
-                        <Input
-                           accept="image/*"
-                           id="contained-button-file"
-                           type="file"
-                           sx={{ display: 'none' }}
-                        />
-                        <Button
-                           startIcon={<PhotoCamera />}
-                           variant="contained"
-                           component="span"
-                           sx={{ my: 2, px: 2, py: 1 }}
-                        >
-                           Upload avatar
-                        </Button>
-                     </label>
+                     <Grid container sx={{ alignItems: 'center' }}>
+                        <label htmlFor="avatar">
+                           <Input
+                              accept="image/jpeg,image/jpg,image/png"
+                              multiple={false}
+                              type="file"
+                              name="avatar"
+                              id="avatar"
+                              sx={{ display: 'none' }}
+                              {...register('avatar')}
+                           />
+                           <Button
+                              startIcon={<PhotoCamera />}
+                              variant="contained"
+                              component="span"
+                              sx={{ my: 2, px: 2, py: 1 }}
+                           >
+                              Upload avatar
+                           </Button>
+                        </label>
+                        <Typography variant={'caption'} sx={{ px: 2 }}>
+                           Only accepted file types are *.JPG, *.JPEG, *.PNG.
+                           <br />
+                           Max file size: 1MB
+                        </Typography>
+                     </Grid>
+                     {avatarErrors.length !== 0 && (
+                        <Alert severity="error">
+                           <ul style={{ marginBottom: 0 }}>
+                              {avatarErrors.map((item, index) => {
+                                 if (item.length > 1) {
+                                    return <li key={index}>{item}</li>;
+                                 }
+                              })}
+                           </ul>
+                        </Alert>
+                     )}
+                     {avatarErrors.length === 0 &&
+                        avatarInput &&
+                        avatarInput[0] && (
+                           /* eslint-disable */
+                           <Grid container>
+                              <TextField
+                                 id="avatarText"
+                                 InputProps={{
+                                    readOnly: true,
+                                 }}
+                                 fullWidth
+                                 variant="standard"
+                                 defaultValue={avatarInput[0].name}
+                              />
+                           </Grid>
+                           /* eslint-enable */
+                        )}
                      <Grid container sx={{ justifyContent: 'flex-end' }}>
                         <Button
                            type="submit"
                            variant="contained"
                            sx={{ mt: 3, mb: 2, py: 2, px: 5 }}
                         >
-                           Sign Up
+                           {isPending ? 'Loading...' : 'Sign In'}
                         </Button>
                      </Grid>
                      <Grid container>
@@ -178,9 +246,7 @@ const Signup = () => {
                               component={RouterLink}
                               to="/login"
                               variant="body2"
-                           >
-                              {'Sign In'}
-                           </Link>
+                           ></Link>
                         </Grid>
                      </Grid>
                      <Copyright sx={{ mt: 3 }} />
@@ -188,6 +254,16 @@ const Signup = () => {
                </Box>
             </Grid>
          </Grid>
+         {error &&
+            toast.error(error, {
+               position: 'bottom-right',
+               autoClose: 5000,
+               hideProgressBar: false,
+               closeOnClick: true,
+               pauseOnHover: true,
+               draggable: true,
+               progress: undefined,
+            })}
       </Main>
    );
 };
