@@ -52,9 +52,7 @@ const Signup = () => {
          );
 
          if (isFulfilled) {
-            setTimeout(() => {
-               history.push('/');
-            }, 500);
+            history.push('/');
          }
       }
 

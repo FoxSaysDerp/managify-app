@@ -1,4 +1,7 @@
 import { Link as RouterLink } from 'react-router-dom';
+import { useForm } from 'react-hook-form';
+import { useLogin } from '../hooks/useLogin';
+import { useHistory } from 'react-router-dom';
 
 import {
    Avatar,
@@ -11,20 +14,37 @@ import {
    Box,
    Grid,
    Typography,
+   Alert,
 } from '@mui/material';
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
+import { toast } from 'react-toastify';
 
+import Spinner from '../components/Spinner';
 import Main from '../styles/Main';
 import Copyright from '../components/Copyright';
 
 const Login = () => {
-   const handleSubmit = (event) => {
-      event.preventDefault();
-      const data = new FormData(event.currentTarget);
-      console.log({
-         email: data.get('email'),
-         password: data.get('password'),
-      });
+   const {
+      register,
+      handleSubmit,
+      formState: { errors },
+   } = useForm();
+
+   const history = useHistory();
+
+   const { login, isPending, error, isFulfilled } = useLogin();
+
+   const onSubmit = async (data) => {
+      console.log(data);
+      await login(data.email, data.password);
+
+      console.log('Login.js - isFulfilled', isFulfilled);
+
+      if (isFulfilled) {
+         history.push('/');
+      }
+
+      return () => clearTimeout();
    };
 
    return (
@@ -61,7 +81,7 @@ const Login = () => {
                   <Box
                      component="form"
                      noValidate
-                     onSubmit={handleSubmit}
+                     onSubmit={handleSubmit(onSubmit)}
                      sx={{ mt: 1 }}
                   >
                      <TextField
@@ -73,7 +93,18 @@ const Login = () => {
                         name="email"
                         autoComplete="email"
                         autoFocus
+                        {...register('email', {
+                           required: true,
+                           minLength: 5,
+                           maxLength: 30,
+                        })}
                      />
+                     {errors.email && (
+                        <Alert severity="error">
+                           This field is required, must contain 5-30 characters
+                           and be a valid email address.
+                        </Alert>
+                     )}
                      <TextField
                         margin="normal"
                         required
@@ -83,18 +114,36 @@ const Login = () => {
                         type="password"
                         id="password"
                         autoComplete="current-password"
+                        {...register('password', {
+                           required: true,
+                           minLength: 10,
+                        })}
                      />
+                     {errors.password && (
+                        <Alert severity="error">
+                           This field is required and must contain at least 10
+                           characters.
+                        </Alert>
+                     )}
                      <FormControlLabel
                         control={<Checkbox value="remember" color="primary" />}
                         label="Remember me"
                      />
-                     <Grid container sx={{ justifyContent: 'flex-end' }}>
+                     <Grid
+                        container
+                        sx={{
+                           justifyContent: 'flex-end',
+                           alignItems: 'center',
+                           columnGap: '16px',
+                        }}
+                     >
+                        {isPending && <Spinner size={32} />}
                         <Button
                            type="submit"
                            variant="contained"
                            sx={{ mt: 3, mb: 2, py: 2, px: 5 }}
                         >
-                           Sign In
+                           {isPending ? 'Loading...' : 'Sign In'}
                         </Button>
                      </Grid>
                      <Grid container>
@@ -123,6 +172,16 @@ const Login = () => {
                </Box>
             </Grid>
          </Grid>
+         {error &&
+            toast.error(error, {
+               position: 'bottom-center',
+               autoClose: 5000,
+               hideProgressBar: false,
+               closeOnClick: true,
+               pauseOnHover: true,
+               draggable: true,
+               progress: undefined,
+            })}
       </Main>
    );
 };

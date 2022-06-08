@@ -24,15 +24,12 @@ const TextContainer = styled(Typography)`
 const Logout = () => {
    const history = useHistory();
 
-   const { logout, isPending } = useLogout;
+   const { logout, isPending } = useLogout();
 
+   useEffect(() => logout);
    useEffect(() => {
-      logout;
-
       if (!isPending) {
-         setTimeout(() => {
-            history.push('/');
-         }, 500);
+         history.push('/login');
       }
    }, []);
 

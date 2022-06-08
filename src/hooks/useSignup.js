@@ -41,12 +41,13 @@ export const useSignup = () => {
 
          dispatch({ type: 'LOGIN', payload: res.user });
 
-         // Will be casted as 'true', no idea why
-         setIsFulfilled(false);
-
          if (!isCancelled) {
             setIsPending(false);
             setError(null);
+
+            // Will be casted as 'true', no idea why
+            setIsFulfilled(false);
+            console.log(isFulfilled);
          }
       } catch (err) {
          if (!isCancelled) {
