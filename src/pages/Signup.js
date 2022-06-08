@@ -2,6 +2,7 @@ import { useState, useMemo } from 'react';
 import { Link as RouterLink } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
 import { useSignup } from '../hooks/useSignup';
+import { useHistory } from 'react-router-dom';
 import { toast } from 'react-toastify';
 
 import {
@@ -21,30 +22,35 @@ import PhotoCamera from '@mui/icons-material/PhotoCamera';
 
 import Main from '../styles/Main';
 import Copyright from '../components/Copyright';
+import Spinner from '../components/Spinner';
 
 const Signup = () => {
    const [avatarErrors, setAvatarErrors] = useState([]);
+
    const {
       register,
       handleSubmit,
       watch,
       formState: { errors },
    } = useForm();
-   const { signup, isPending, error } = useSignup();
+
+   const history = useHistory();
+
+   const { signup, isPending, error, isFulfilled } = useSignup();
 
    const ONE_MEGABYTE = 1024 * 1024;
-
    const ALLOWED_TYPES = ['image/jpeg', 'image/jpg', 'image/png'];
 
-   const onSubmit = (data) => {
+   const onSubmit = async (data) => {
       console.log(data);
-      signup(data.email, data.password, data.displayName, data.avatar[0]);
-   };
+      await signup(data.email, data.password, data.displayName, data.avatar[0]);
 
-   // console.log(watch('displayName'));
-   // console.log(watch('email'));
-   // console.log(watch('password'));
-   // console.log('errors', errors);
+      if (isFulfilled) {
+         setTimeout(() => {
+            history.push('/');
+         }, 500);
+      }
+   };
 
    const avatarInput = watch('avatar');
 
@@ -204,10 +210,10 @@ const Signup = () => {
                            </ul>
                         </Alert>
                      )}
+                     {/* eslint-disable */}
                      {avatarErrors.length === 0 &&
                         avatarInput &&
                         avatarInput[0] && (
-                           /* eslint-disable */
                            <Grid container>
                               <TextField
                                  id="avatarText"
@@ -219,9 +225,17 @@ const Signup = () => {
                                  defaultValue={avatarInput[0].name}
                               />
                            </Grid>
-                           /* eslint-enable */
                         )}
-                     <Grid container sx={{ justifyContent: 'flex-end' }}>
+                     {/* eslint-enable */}
+                     <Grid
+                        container
+                        sx={{
+                           justifyContent: 'flex-end',
+                           alignItems: 'center',
+                           columnGap: '16px',
+                        }}
+                     >
+                        {isPending && <Spinner size={32} />}
                         <Button
                            type="submit"
                            variant="contained"
@@ -256,7 +270,7 @@ const Signup = () => {
          </Grid>
          {error &&
             toast.error(error, {
-               position: 'bottom-right',
+               position: 'bottom-center',
                autoClose: 5000,
                hideProgressBar: false,
                closeOnClick: true,

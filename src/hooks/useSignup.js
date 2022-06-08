@@ -10,11 +10,13 @@ export const useSignup = () => {
    const [isCancelled, setIsCancelled] = useState(false);
    const [error, setError] = useState(null);
    const [isPending, setIsPending] = useState(false);
+   const [isFulfilled, setIsFulfilled] = useState(false);
    const { dispatch } = useAuthContext();
 
    const signup = async (email, password, displayName, avatar) => {
       setError(null);
       setIsPending(true);
+      setIsFulfilled(false);
 
       try {
          const res = await projectAuth.createUserWithEmailAndPassword(
@@ -43,6 +45,7 @@ export const useSignup = () => {
          if (!isCancelled) {
             setIsPending(false);
             setError(null);
+            setIsFulfilled(true);
          }
       } catch (err) {
          if (!isCancelled) {
@@ -56,5 +59,5 @@ export const useSignup = () => {
       return () => setIsCancelled(true);
    }, []);
 
-   return { signup, error, isPending };
+   return { signup, error, isPending, isFulfilled };
 };
