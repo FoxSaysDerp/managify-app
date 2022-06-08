@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { useAuthContext } from '../hooks/useAuthContext';
 
 import styledComp from 'styled-components';
 
@@ -20,8 +21,10 @@ import {
    IconButton,
    Badge,
    Tooltip,
+   Typography,
 } from '@mui/material';
 import { Menu, ChevronLeft, Notifications, Add } from '@mui/icons-material';
+import StringAvatar from './StringAvatar';
 
 import { NavLink as RouterLink } from 'react-router-dom';
 
@@ -34,7 +37,6 @@ const Logo = styledComp.img`
    max-height: 42px;
    width: auto;
 `;
-console.log(theme.palette);
 
 const DashboardListItemButton = styledComp(ListItemButton)`
    &.active {
@@ -93,6 +95,8 @@ const Dashboard = (props) => {
       setOpen(!open);
    };
 
+   const { user } = useAuthContext();
+
    const { children } = props;
 
    return (
@@ -127,10 +131,19 @@ const Dashboard = (props) => {
                         <Notifications />
                      </Badge>
                   </IconButton>
-                  <IconButton sx={{ ml: 2 }}>
-                     <Avatar
-                        src={require('../assets/images/placeholders/person-placeholder.jpg')}
-                     />
+                  {user && (
+                     <Typography variant="button" sx={{ ml: 4 }}>
+                        {user.displayName}
+                     </Typography>
+                  )}
+                  <IconButton>
+                     {user?.photoURL ? (
+                        <Avatar src={user?.photoURL} />
+                     ) : user ? (
+                        <StringAvatar name={user.displayName} />
+                     ) : (
+                        <StringAvatar name="AAAA" />
+                     )}
                   </IconButton>
                </Toolbar>
             </AppBar>

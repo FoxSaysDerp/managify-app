@@ -1,4 +1,6 @@
 import React, { useState, useEffect } from 'react';
+import { useCollection } from '../hooks/useCollection';
+import { useAuthContext } from '../hooks/useAuthContext';
 
 import styled from 'styled-components';
 
@@ -15,8 +17,7 @@ import {
    Badge,
 } from '@mui/material';
 import { grey, green } from '@mui/material/colors';
-
-import DUMMY_USERS from '../constants/dummyUsers';
+import StringAvatar from '../components/StringAvatar';
 
 const secondary = grey[500];
 const offline = grey[300];
@@ -40,14 +41,19 @@ const UserList = (props) => {
    const { extended } = props;
 
    const [isLoading, setIsLoading] = useState(true);
+   const [users, setUsers] = useState([]);
 
-   const users = DUMMY_USERS();
+   const { documents } = useCollection('users');
+   const { user } = useAuthContext();
 
    useEffect(() => {
-      if (users.isLoaded) {
+      console.log('documents', documents);
+      if (documents && user) {
+         setUsers(documents.filter((el) => el.id !== user?.uid));
          setIsLoading(false);
+         console.log('users', users);
       }
-   }, [users]);
+   }, [documents, user]);
 
    if (isLoading) {
       return (
@@ -71,74 +77,81 @@ const UserList = (props) => {
    }
 
    return (
-      <List sx={{ width: '100%' }}>
-         {users.users.map((user, index) => {
-            return (
-               <ListItem key={index}>
-                  <ListItemAvatar>
-                     <StatusBadge
-                        variant="dot"
-                        badgeContent={4}
-                        isoffline={user.registered.age % 2}
-                        anchorOrigin={{
-                           vertical: 'bottom',
-                           horizontal: 'right',
-                        }}
-                     >
-                        <Avatar>
-                           <img src={user.picture.thumbnail} alt="User" />
-                        </Avatar>
-                     </StatusBadge>
-                  </ListItemAvatar>
-                  <ListItemText>
-                     <Grid container>
-                        <Grid item sx={{ minWidth: extended && '150px' }}>
-                           <Stack>
-                              <Typography
-                                 sx={{ display: 'inline-block', mr: 1 }}
-                              >
-                                 {`${user.name.first} ${user.name.last}`}
-                              </Typography>
-                              <Typography
-                                 sx={{ display: 'block' }}
-                                 color={secondary}
-                                 variant="caption"
-                              >
-                                 {`@${user.login.username}`}
-                              </Typography>
-                           </Stack>
-                        </Grid>
-                        {extended && (
-                           <Grid
-                              item
-                              sx={{
-                                 mx: 3,
-                                 display: 'flex',
-                                 justifyContent: 'center',
-                                 alignItems: 'center',
-                              }}
-                           >
-                              <Typography
-                                 sx={{ display: 'inline-block' }}
-                                 color={secondary}
-                                 variant="caption"
-                              >
-                                 Tasks:
-                              </Typography>
-                              <Typography
-                                 sx={{ ml: 1, display: 'inline-block' }}
-                                 variant="body2"
-                              >
-                                 {user.registered.age}
-                              </Typography>
+      !isLoading && (
+         <List sx={{ width: '100%' }}>
+            {users.map((userItem, index) => {
+               return (
+                  <ListItem key={index}>
+                     <ListItemAvatar>
+                        <StatusBadge
+                           variant="dot"
+                           badgeContent={4}
+                           isoffline={userItem.online}
+                           anchorOrigin={{
+                              vertical: 'bottom',
+                              horizontal: 'right',
+                           }}
+                        >
+                           {userItem?.photoURL ? (
+                              <Avatar src={userItem?.photoURL} />
+                           ) : (
+                              <StringAvatar name={userItem.displayName} />
+                           )}
+                        </StatusBadge>
+                     </ListItemAvatar>
+                     <ListItemText>
+                        <Grid container>
+                           <Grid item sx={{ minWidth: extended && '150px' }}>
+                              <Stack>
+                                 <Typography
+                                    sx={{ display: 'inline-block', mr: 1 }}
+                                 >
+                                    {userItem.displayName}
+                                 </Typography>
+                                 <Typography
+                                    sx={{ display: 'block' }}
+                                    color={secondary}
+                                    variant="caption"
+                                 >
+                                    {`@${userItem.id.slice(
+                                       3,
+                                       userItem.id.slice.length - 15
+                                    )}...`}
+                                 </Typography>
+                              </Stack>
                            </Grid>
-                        )}
-                     </Grid>
-                  </ListItemText>
-               </ListItem>
-            );
-         })}
-      </List>
+                           {extended && (
+                              <Grid
+                                 item
+                                 sx={{
+                                    mx: 3,
+                                    display: 'flex',
+                                    justifyContent: 'center',
+                                    alignItems: 'center',
+                                 }}
+                              >
+                                 <Typography
+                                    sx={{ display: 'inline-block' }}
+                                    color={secondary}
+                                    variant="caption"
+                                 >
+                                    Tasks:
+                                 </Typography>
+                                 <Typography
+                                    sx={{ ml: 1, display: 'inline-block' }}
+                                    variant="body2"
+                                 >
+                                    6
+                                 </Typography>
+                              </Grid>
+                           )}
+                        </Grid>
+                     </ListItemText>
+                  </ListItem>
+               );
+            })}
+         </List>
+      )
    );
 };
 
