@@ -20,17 +20,12 @@ import {
    IconButton,
    Badge,
    Tooltip,
-   Chip,
 } from '@mui/material';
 import { Menu, ChevronLeft, Notifications, Add } from '@mui/icons-material';
 
 import { NavLink as RouterLink } from 'react-router-dom';
 
-import {
-   dashboardNav,
-   dashboardNavSecondary,
-   dashboardNavDev,
-} from '../constants/dashboardNav';
+import { dashboardNav, dashboardNavSecondary } from '../constants/dashboardNav';
 import Copyright from './Copyright';
 
 const drawerWidth = 240;
@@ -181,33 +176,6 @@ const Dashboard = (props) => {
                            <ListItemIcon>{item.icon}</ListItemIcon>
 
                            <ListItemText primary={item.label} />
-                        </DashboardListItemButton>
-                     );
-                  })}
-                  <Divider sx={{ mt: 5, mb: 1 }} />
-                  {dashboardNavDev.map((item, index) => {
-                     return (
-                        <DashboardListItemButton
-                           component={RouterLink}
-                           to={item.link}
-                           key={index}
-                           sx={{ px: 2, py: 1, m: 1, borderRadius: '18px' }}
-                        >
-                           <ListItemIcon>{item.icon}</ListItemIcon>
-
-                           <ListItemText
-                              primary={item.label}
-                              sx={{
-                                 display: 'inline-block',
-                                 width: 'fit-content',
-                              }}
-                           />
-                           {item.chip && (
-                              <Chip
-                                 label={item.chip.label}
-                                 color={item.chip.color}
-                              />
-                           )}
                         </DashboardListItemButton>
                      );
                   })}

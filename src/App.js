@@ -20,6 +20,7 @@ import { AuthContextProvider } from './context/auth-context';
 
 import Dashboard from './components/Dashboard';
 import ModuleTitle from './components/ModuleTitle';
+import Devtools from './components/Devtools';
 
 const Main = styled.main`
    width: 100%;
@@ -96,6 +97,7 @@ const App = () => {
                         </Switch>
                      </React.Fragment>
                   )}
+                  {process.env.NODE_ENV === 'development' && <Devtools />}
                   <ToastContainer
                      position="bottom-right"
                      autoClose={2000}

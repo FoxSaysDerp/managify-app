@@ -5,7 +5,6 @@ import PeopleAltIcon from '@mui/icons-material/PeopleAlt';
 import LogoutIcon from '@mui/icons-material/Logout';
 import CalendarViewMonthIcon from '@mui/icons-material/CalendarViewMonth';
 import HomeIcon from '@mui/icons-material/Home';
-import ConstructionIcon from '@mui/icons-material/Construction';
 
 export const dashboardNav = [
    {
@@ -51,17 +50,5 @@ export const dashboardNavSecondary = [
       ),
       link: '/logout',
       label: 'Logout',
-   },
-];
-
-export const dashboardNavDev = [
-   {
-      icon: <ConstructionIcon />,
-      link: '/dev',
-      label: 'Dev Tools',
-      chip: {
-         color: 'error',
-         label: 'DEV',
-      },
    },
 ];
