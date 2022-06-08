@@ -1,7 +1,6 @@
 import Login from '../pages/Login';
 import Logout from '../pages/Logout';
 import Signup from '../pages/Signup';
-import Dev from '../pages/Dev';
 import Home from '../pages/Home';
 import Calendar from '../pages/Calendar';
 import Team from '../pages/Team';
@@ -11,54 +10,58 @@ import UserTasks from '../pages/UserTasks';
 
 const routes = [
    {
-      component: Home,
+      component: <Home />,
       name: 'Home',
       path: '/',
+      auth: 'loggedIn',
    },
    {
-      component: Tasks,
+      component: <Tasks />,
       name: 'Tasks',
       path: '/tasks',
+      auth: 'loggedIn',
    },
    {
-      component: UserTasks,
+      component: <UserTasks />,
       name: 'User Tasks',
       path: '/tasks/user',
+      auth: 'loggedIn',
    },
    {
-      component: Task,
+      component: <Task />,
       name: 'Task',
       path: '/tasks/:tid',
+      auth: 'loggedIn',
    },
    {
-      component: Calendar,
+      component: <Calendar />,
       name: 'Calendar View',
       path: '/calendar',
+      auth: 'loggedIn',
    },
    {
-      component: Team,
+      component: <Team />,
       name: 'Team Members',
       path: '/team',
+      auth: 'loggedIn',
    },
    {
-      component: Login,
+      component: <Login />,
       name: 'Login Page',
       path: '/login',
+      auth: 'loggedOut',
    },
    {
-      component: Logout,
+      component: <Logout />,
       name: 'Logout Page',
       path: '/logout',
+      auth: 'loggedIn',
    },
    {
-      component: Signup,
+      component: <Signup />,
       name: 'Signup Page',
       path: '/signup',
-   },
-   {
-      component: Dev,
-      name: 'Developer page',
-      path: '/dev',
+      auth: 'loggedOut',
    },
 ];
 
