@@ -4,12 +4,7 @@ import { useLogout } from '../hooks/useLogout';
 
 import styled from '@emotion/styled';
 import { Typography } from '@mui/material';
-import { LoadingOutlined } from '@ant-design/icons';
-import { Spin } from 'antd';
-
-const antIcon = (
-   <LoadingOutlined style={{ fontSize: 48, color: '#ffb300' }} spin />
-);
+import Spinner from '../components/Spinner';
 
 const LogoutContainer = styled.div`
    width: 100%;
@@ -44,7 +39,7 @@ const Logout = () => {
    return (
       <LogoutContainer>
          <TextContainer variant="h4">You are being logout...</TextContainer>
-         <Spin indicator={antIcon} />
+         <Spinner />
       </LogoutContainer>
    );
 };
