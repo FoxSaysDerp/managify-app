@@ -1,4 +1,5 @@
 import Login from '../pages/Login';
+import Logout from '../pages/Logout';
 import Signup from '../pages/Signup';
 import Dev from '../pages/Dev';
 import Home from '../pages/Home';
@@ -43,6 +44,11 @@ const routes = [
       component: Login,
       name: 'Login Page',
       path: '/login',
+   },
+   {
+      component: Logout,
+      name: 'Logout Page',
+      path: '/logout',
    },
    {
       component: Signup,
