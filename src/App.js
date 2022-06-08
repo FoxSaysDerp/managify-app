@@ -44,8 +44,6 @@ const App = () => {
    useEffect(() => {
       if (dashboardLocations.includes(location.pathname)) {
          setIsDashboardMode(true);
-         console.log(isDashboardMode);
-         console.log(location);
       } else {
          setIsDashboardMode(false);
       }

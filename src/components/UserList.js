@@ -42,7 +42,6 @@ const UserList = (props) => {
    const [isLoading, setIsLoading] = useState(true);
 
    const users = DUMMY_USERS();
-   console.log(users);
 
    useEffect(() => {
       if (users.isLoaded) {
