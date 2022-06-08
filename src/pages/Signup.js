@@ -43,13 +43,22 @@ const Signup = () => {
 
    const onSubmit = async (data) => {
       console.log(data);
-      await signup(data.email, data.password, data.displayName, data.avatar[0]);
+      if (Object.values(data).every((item) => typeof item !== 'undefined')) {
+         await signup(
+            data.email,
+            data.password,
+            data.displayName,
+            data.avatar[0]
+         );
 
-      if (isFulfilled) {
-         setTimeout(() => {
-            history.push('/');
-         }, 500);
+         if (isFulfilled) {
+            setTimeout(() => {
+               history.push('/');
+            }, 500);
+         }
       }
+
+      return () => clearTimeout();
    };
 
    const avatarInput = watch('avatar');
@@ -69,8 +78,6 @@ const Signup = () => {
 
    useMemo(() => {
       avatarInputChecker();
-      console.log(avatarInput);
-      console.log(avatarErrors);
    }, [avatarInput]);
 
    return (
@@ -140,7 +147,6 @@ const Signup = () => {
                         label="Email Address"
                         name="email"
                         autoComplete="email"
-                        autoFocus
                         {...register('email', {
                            required: true,
                            minLength: 5,
@@ -241,7 +247,7 @@ const Signup = () => {
                            variant="contained"
                            sx={{ mt: 3, mb: 2, py: 2, px: 5 }}
                         >
-                           {isPending ? 'Loading...' : 'Sign In'}
+                           {isPending ? 'Loading...' : 'Sign Up'}
                         </Button>
                      </Grid>
                      <Grid container>
@@ -260,7 +266,9 @@ const Signup = () => {
                               component={RouterLink}
                               to="/login"
                               variant="body2"
-                           ></Link>
+                           >
+                              Sign In
+                           </Link>
                         </Grid>
                      </Grid>
                      <Copyright sx={{ mt: 3 }} />

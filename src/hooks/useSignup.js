@@ -16,7 +16,6 @@ export const useSignup = () => {
    const signup = async (email, password, displayName, avatar) => {
       setError(null);
       setIsPending(true);
-      setIsFulfilled(false);
 
       try {
          const res = await projectAuth.createUserWithEmailAndPassword(
@@ -42,15 +41,20 @@ export const useSignup = () => {
 
          dispatch({ type: 'LOGIN', payload: res.user });
 
+         // Will be casted as 'true', no idea why
+         setIsFulfilled(false);
+
          if (!isCancelled) {
             setIsPending(false);
             setError(null);
-            setIsFulfilled(true);
          }
       } catch (err) {
          if (!isCancelled) {
             setError(err.message);
             setIsPending(false);
+
+            // Will be casted as 'false', also no idea why
+            setIsFulfilled(true);
          }
       }
    };
