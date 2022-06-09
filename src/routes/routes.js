@@ -5,6 +5,7 @@ import Home from '../pages/Home';
 import Calendar from '../pages/Calendar';
 import Team from '../pages/Team';
 import Task from '../pages/Task';
+import CreateTask from '../pages/CreateTask';
 import Tasks from '../pages/Tasks';
 import UserTasks from '../pages/UserTasks';
 
@@ -30,7 +31,13 @@ const routes = [
    {
       component: <Task />,
       name: 'Task',
-      path: '/tasks/:tid',
+      path: '/taskxs/:tid',
+      auth: 'loggedIn',
+   },
+   {
+      component: <CreateTask />,
+      name: 'Create new task',
+      path: '/tasks/new',
       auth: 'loggedIn',
    },
    {
