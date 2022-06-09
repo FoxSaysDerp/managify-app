@@ -1,4 +1,5 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
+import { useHistory } from 'react-router-dom';
 import { useAuthContext } from '../hooks/useAuthContext';
 
 import styledComp from 'styled-components';
@@ -95,12 +96,14 @@ const Dashboard = (props) => {
       setOpen(!open);
    };
 
+   const history = useHistory();
+
    const { user } = useAuthContext();
 
    const { children } = props;
 
    return (
-      <React.Fragment>
+      <>
          <Box sx={{ display: 'flex' }}>
             <AppBar position="absolute" open={open}>
                <Toolbar
@@ -229,12 +232,18 @@ const Dashboard = (props) => {
             }}
          >
             <Tooltip title="Add new task" arrow placement="top-start">
-               <Fab color="primary" aria-label="add">
+               <Fab
+                  color="primary"
+                  aria-label="add"
+                  onClick={() => {
+                     history.push('/tasks/new');
+                  }}
+               >
                   <Add />
                </Fab>
             </Tooltip>
          </Box>
-      </React.Fragment>
+      </>
    );
 };
 
