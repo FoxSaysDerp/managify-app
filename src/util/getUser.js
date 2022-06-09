@@ -1,10 +1,10 @@
 import { useEffect, useState } from 'react';
-import { useCollection } from './useCollection';
+import { useCollection } from '../hooks/useCollection';
 
 const AVATAR_PLACEHOLDER =
    'https://firebasestorage.googleapis.com/v0/b/managify-389f8.appspot.com/o/avatars%2Favatar-placeholder.jpg?alt=media&token=36835d1a-f75f-41d5-a044-809f579a881f';
 
-export const useUser = (userId) => {
+export const getUser = (userId) => {
    const [userObj, setUserObj] = useState({
       id: userId,
       displayName: 'Loading',

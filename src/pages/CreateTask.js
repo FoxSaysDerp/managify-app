@@ -5,7 +5,7 @@ import { useHistory } from 'react-router-dom';
 import { useCollection } from '../hooks/useCollection';
 import { useAuthContext } from '../hooks/useAuthContext';
 import { useFirestore } from '../hooks/useFirestore';
-import { useColor } from '../hooks/useColor';
+import { getColor } from '../util/getColor';
 
 import moment from 'moment';
 
@@ -311,7 +311,7 @@ const CreateTask = () => {
                                        <Chip
                                           label={taskPriority}
                                           style={{
-                                             backgroundColor: useColor({
+                                             backgroundColor: getColor({
                                                 value: taskPriority,
                                                 type: 'priority',
                                              }),
@@ -355,7 +355,7 @@ const CreateTask = () => {
                                        <Chip
                                           label={taskStatus}
                                           style={{
-                                             backgroundColor: useColor({
+                                             backgroundColor: getColor({
                                                 value: taskStatus,
                                                 type: 'status',
                                              }),

@@ -1,7 +1,7 @@
 import { useHistory } from 'react-router-dom';
 
-import { useUser } from '../hooks/useUser';
-import { useColor } from '../hooks/useColor';
+import { getUser } from '../util/getUser';
+import { getColor } from '../util/getColor';
 
 import { DataGrid } from '@mui/x-data-grid';
 import moment from 'moment';
@@ -27,7 +27,7 @@ const TaskList = (props) => {
                      label={task.row.taskPriority}
                      size="small"
                      style={{
-                        backgroundColor: useColor({
+                        backgroundColor: getColor({
                            value: task.row.taskPriority,
                            type: 'priority',
                         }),
@@ -47,7 +47,7 @@ const TaskList = (props) => {
             <Chip
                label={status.value}
                style={{
-                  backgroundColor: useColor({
+                  backgroundColor: getColor({
                      value: status.value,
                      type: 'status',
                   }),
@@ -69,7 +69,7 @@ const TaskList = (props) => {
                   }}
                >
                   {assignedUsers.map((item, index) => {
-                     let user = useUser(item);
+                     let user = getUser(item);
                      return (
                         <Tooltip key={user.id} arrow title={user.displayName}>
                            <Avatar
