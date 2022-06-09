@@ -1,9 +1,11 @@
 import { useState, useEffect } from 'react';
 import { useForm } from 'react-hook-form';
+import { useHistory } from 'react-router-dom';
+
 import { useCollection } from '../hooks/useCollection';
 import { useAuthContext } from '../hooks/useAuthContext';
 import { useFirestore } from '../hooks/useFirestore';
-import { useHistory } from 'react-router-dom';
+import { useColor } from '../hooks/useColor';
 
 import moment from 'moment';
 
@@ -67,25 +69,6 @@ const CreateTask = () => {
    };
 
    const creationTime = moment();
-
-   const colorFinder = ({ value, type }) => {
-      let color;
-      if (type === 'priority') {
-         TASK_PRIORITY.filter((item) => {
-            if (item.name === value) {
-               color = item.color;
-            }
-         });
-      }
-      if (type === 'status') {
-         TASK_STATUS.filter((item) => {
-            if (item.name === value) {
-               color = item.color;
-            }
-         });
-      }
-      return color;
-   };
 
    const ITEM_HEIGHT = 48;
    const ITEM_PADDING_TOP = 8;
@@ -307,7 +290,7 @@ const CreateTask = () => {
                                        <Chip
                                           label={taskPriority}
                                           style={{
-                                             backgroundColor: colorFinder({
+                                             backgroundColor: useColor({
                                                 value: taskPriority,
                                                 type: 'priority',
                                              }),
@@ -351,7 +334,7 @@ const CreateTask = () => {
                                        <Chip
                                           label={taskStatus}
                                           style={{
-                                             backgroundColor: colorFinder({
+                                             backgroundColor: useColor({
                                                 value: taskStatus,
                                                 type: 'status',
                                              }),
@@ -385,7 +368,7 @@ const CreateTask = () => {
                <Button
                   type="submit"
                   variant="contained"
-                  disabled={!!errors}
+                  disabled={!errors}
                   sx={{ mt: 3, mb: 2, py: 2, px: 5 }}
                >
                   {isLoading ? 'Submitting...' : 'Submit'}
