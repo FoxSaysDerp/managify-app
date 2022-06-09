@@ -186,7 +186,9 @@ const Signup = () => {
                               name="avatar"
                               id="avatar"
                               sx={{ display: 'none' }}
-                              {...register('avatar')}
+                              {...register('avatar', {
+                                 required: true,
+                              })}
                            />
                            <Button
                               startIcon={<PhotoCamera />}
