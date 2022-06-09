@@ -139,6 +139,22 @@ const CreateTask = () => {
                      <InputLabel htmlFor="taskCreator">Task creator</InputLabel>
                      <Input
                         id="taskCreator"
+                        value={user.displayName}
+                        startAdornment={
+                           <InputAdornment position="start">
+                              <Avatar
+                                 src={user.photoURL}
+                                 alt={user.displayName}
+                                 sx={{ maxHeight: 24, maxWidth: 24 }}
+                              />
+                           </InputAdornment>
+                        }
+                     />
+                  </FormControl>
+                  <FormControl variant="standard" sx={{ display: 'none' }}>
+                     <InputLabel htmlFor="taskCreator">Task creator</InputLabel>
+                     <Input
+                        id="taskCreator"
                         value={user.uid}
                         startAdornment={
                            <InputAdornment position="start">
@@ -227,19 +243,24 @@ const CreateTask = () => {
                                     label="Chip"
                                  />
                               }
-                              renderValue={(selected) => (
-                                 <Box
-                                    sx={{
-                                       display: 'flex',
-                                       flexWrap: 'wrap',
-                                       gap: 0.5,
-                                    }}
-                                 >
-                                    {selected.map((value) => (
-                                       <Chip key={value} label={value} />
-                                    ))}
-                                 </Box>
-                              )}
+                              renderValue={(selected) => {
+                                 return (
+                                    <Box
+                                       sx={{
+                                          display: 'flex',
+                                          flexWrap: 'wrap',
+                                          gap: 0.5,
+                                       }}
+                                    >
+                                       {selected.map((value) => {
+                                          console.log(value);
+                                          return (
+                                             <Chip key={value} label={value} />
+                                          );
+                                       })}
+                                    </Box>
+                                 );
+                              }}
                               MenuProps={MenuProps}
                            >
                               {users.map((user) => (
