@@ -120,11 +120,13 @@ const Dashboard = (props) => {
                   >
                      <Menu />
                   </IconButton>
-                  <Logo
-                     src={require('../assets/images/logo.png')}
-                     alt="Managify"
-                     sx={{ flexGrow: 1 }}
-                  />
+                  {!open && (
+                     <Logo
+                        src={require('../assets/images/logo.png')}
+                        alt="Managify"
+                        sx={{ flexGrow: 1 }}
+                     />
+                  )}
                   <div style={{ flexGrow: 1 }} />
                   <IconButton color="inherit">
                      <Badge badgeContent={4} color="secondary">
@@ -156,6 +158,11 @@ const Dashboard = (props) => {
                      px: [1],
                   }}
                >
+                  <Logo
+                     src={require('../assets/images/logo.png')}
+                     alt="Managify"
+                     style={{ width: '100%', margin: '0 6px' }}
+                  />
                   <IconButton onClick={toggleDrawer}>
                      <ChevronLeft />
                   </IconButton>
