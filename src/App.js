@@ -28,7 +28,7 @@ const Main = styled.main`
 
 const App = () => {
    const [dashboardNavArr, setDashboardNavArr] = useState([]);
-   const [isDashboardMode, setIsDashboardMode] = useState(false);
+   const [isDashboardMode, setIsDashboardMode] = useState(true);
    const [isMenuExpanded, setIsMenuExpanded] = useState(true);
 
    const location = useLocation();
@@ -49,6 +49,7 @@ const App = () => {
    let dashboardLocations = dashboardNavArr.map(({ link }) => link);
    dashboardLocations = [
       ...dashboardLocations,
+      '',
       `/tasks/${paramId}`,
       `/users/${paramId}`,
    ];
