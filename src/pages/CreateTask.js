@@ -90,6 +90,7 @@ const CreateTask = () => {
          dueDate: dueDate.toJSON(),
          taskPriority,
          taskStatus,
+         isArchived: false,
       };
 
       await addDocument(payload);

@@ -23,6 +23,7 @@ import {
 } from '@mui/material';
 import { toast } from 'react-toastify';
 import Spinner from '../components/Spinner';
+import ArchiveIcon from '@mui/icons-material/Archive';
 
 import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
@@ -268,9 +269,19 @@ const Task = () => {
                <Button
                   type="submit"
                   variant="contained"
-                  sx={{ mt: 3, mb: 2, py: 2, px: 5 }}
+                  sx={{ mt: 3, mb: 2, py: 1, px: 5 }}
                >
                   Edit
+               </Button>
+               <Divider orientation="vertical" flexItem />
+               <Button
+                  type="submit"
+                  variant="contained"
+                  color="error"
+                  sx={{ mt: 3, mb: 2, py: 1, px: 2 }}
+                  startIcon={<ArchiveIcon />}
+               >
+                  Archive
                </Button>
             </Grid>
          </Box>
