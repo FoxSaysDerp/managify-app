@@ -1,4 +1,4 @@
-import { useHistory } from 'react-router-dom';
+import { useHistory, Link as RouterLink } from 'react-router-dom';
 
 import { getUser } from '../util/getUser';
 import { getColor } from '../util/getColor';
@@ -6,7 +6,7 @@ import { getColor } from '../util/getColor';
 import { DataGrid } from '@mui/x-data-grid';
 import moment from 'moment';
 
-import { Avatar, Box, Tooltip, Chip } from '@mui/material';
+import { Avatar, Box, Tooltip, Chip, Link } from '@mui/material';
 
 const TaskList = (props) => {
    const { tasks } = props;
@@ -21,7 +21,11 @@ const TaskList = (props) => {
          editable: false,
          renderCell: (task) => {
             return (
-               <span>
+               <Link
+                  component={RouterLink}
+                  to={`/tasks/${task.row.id}`}
+                  sx={{ color: '#000000', textDecoration: 'none' }}
+               >
                   {task.value}
                   <Chip
                      label={task.row.taskPriority}
@@ -34,7 +38,7 @@ const TaskList = (props) => {
                         marginLeft: 8,
                      }}
                   />
-               </span>
+               </Link>
             );
          },
       },
