@@ -15,27 +15,21 @@ import {
    Skeleton,
    Typography,
    Badge,
+   Link,
 } from '@mui/material';
 import { grey, green } from '@mui/material/colors';
 import StringAvatar from '../components/StringAvatar';
+import { Link as RouterLink } from 'react-router-dom';
 
 const secondary = grey[500];
 const offline = grey[300];
 const available = green[400];
 
-/* eslint-disable */
 const StatusBadge = styled(Badge)`
    > span {
-      background-color: ${available};
+      background-color: ${(props) => (props.isoffline ? offline : available)};
    }
-   ${({ isoffline }) =>
-      isoffline &&
-      `
-         > span {
-         background-color: ${offline};
-      }`}
 `;
-/* eslint-enable */
 
 const UserList = (props) => {
    const { extended } = props;
@@ -47,11 +41,9 @@ const UserList = (props) => {
    const { user } = useAuthContext();
 
    useEffect(() => {
-      console.log('documents', documents);
       if (documents && user) {
          setUsers(documents.filter((el) => el.id !== user?.uid));
          setIsLoading(false);
-         console.log('users', users);
       }
    }, [documents, user]);
 
@@ -84,9 +76,11 @@ const UserList = (props) => {
                   <ListItem key={index}>
                      <ListItemAvatar>
                         <StatusBadge
+                           component={RouterLink}
+                           to={`/users/${userItem.id}`}
                            variant="dot"
                            badgeContent={4}
-                           isoffline={userItem.online}
+                           isoffline={!userItem.online ? 1 : undefined}
                            anchorOrigin={{
                               vertical: 'bottom',
                               horizontal: 'right',
@@ -103,15 +97,21 @@ const UserList = (props) => {
                         <Grid container>
                            <Grid item sx={{ minWidth: extended && '150px' }}>
                               <Stack>
-                                 <Typography
+                                 <Link
+                                    component={RouterLink}
+                                    color="inherit"
+                                    underline="never"
                                     sx={{ display: 'inline-block', mr: 1 }}
+                                    to={`/users/${userItem.id}`}
                                  >
                                     {userItem.displayName}
-                                 </Typography>
+                                 </Link>
                                  <Typography
+                                    component={RouterLink}
                                     sx={{ display: 'block' }}
                                     color={secondary}
                                     variant="caption"
+                                    to={`/users/${userItem.id}`}
                                  >
                                     {`@${userItem.id.slice(
                                        3,

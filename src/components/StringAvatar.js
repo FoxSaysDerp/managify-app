@@ -20,6 +20,14 @@ const stringToColor = (string) => {
 };
 
 const stringAvatar = (name) => {
+   if (!name) {
+      return {
+         sx: {
+            bgcolor: '#ffb300',
+         },
+         children: 'A',
+      };
+   }
    return {
       sx: {
          bgcolor: stringToColor(name),
