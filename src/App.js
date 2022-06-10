@@ -36,7 +36,6 @@ const App = () => {
    const { user, authIsReady } = useAuthContext();
 
    const pathnameArray = location.pathname.split('/');
-   console.log(pathnameArray);
 
    const getParamId = () => {
       if (pathnameArray.at(-1) !== 'tasks' && pathnameArray.at(-1) !== '') {
@@ -46,10 +45,13 @@ const App = () => {
       }
    };
    const paramId = getParamId();
-   console.log(paramId);
 
    let dashboardLocations = dashboardNavArr.map(({ link }) => link);
-   dashboardLocations = [...dashboardLocations, `/tasks/${paramId}`];
+   dashboardLocations = [
+      ...dashboardLocations,
+      `/tasks/${paramId}`,
+      `/users/${paramId}`,
+   ];
 
    let currentLocationName;
    currentLocationName = dashboardNavArr.find(
