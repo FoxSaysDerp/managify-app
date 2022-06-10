@@ -25,19 +25,19 @@ const routes = [
    {
       component: <UserTasks />,
       name: 'User Tasks',
-      path: '/tasks/user',
-      auth: 'loggedIn',
-   },
-   {
-      component: <Task />,
-      name: 'Task',
-      path: '/taskxs/:tid',
+      path: '/users/:uid/tasks',
       auth: 'loggedIn',
    },
    {
       component: <CreateTask />,
       name: 'Create new task',
       path: '/tasks/new',
+      auth: 'loggedIn',
+   },
+   {
+      component: <Task />,
+      name: 'Task',
+      path: '/tasks/:tid',
       auth: 'loggedIn',
    },
    {
@@ -49,7 +49,7 @@ const routes = [
    {
       component: <Team />,
       name: 'Team Members',
-      path: '/team',
+      path: '/users',
       auth: 'loggedIn',
    },
    {

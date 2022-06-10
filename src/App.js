@@ -27,22 +27,43 @@ const Main = styled.main`
 `;
 
 const App = () => {
+   const [dashboardNavArr, setDashboardNavArr] = useState([]);
    const [isDashboardMode, setIsDashboardMode] = useState(false);
    const [isMenuExpanded, setIsMenuExpanded] = useState(true);
 
    const location = useLocation();
 
-   const dashboardLocations = dashboardNav.map(({ link }) => link);
+   const { user, authIsReady } = useAuthContext();
+
+   const pathnameArray = location.pathname.split('/');
+   console.log(pathnameArray);
+
+   const getParamId = () => {
+      if (pathnameArray.at(-1) !== 'tasks' && pathnameArray.at(-1) !== '') {
+         return pathnameArray.at(-1);
+      } else {
+         return pathnameArray.at(-2);
+      }
+   };
+   const paramId = getParamId();
+   console.log(paramId);
+
+   let dashboardLocations = dashboardNavArr.map(({ link }) => link);
+   dashboardLocations = [...dashboardLocations, `/tasks/${paramId}`];
 
    let currentLocationName;
-   currentLocationName = dashboardNav.find(
+   currentLocationName = dashboardNavArr.find(
       (item) => item.link === location.pathname
    );
    if (typeof currentLocationName === 'undefined') {
       currentLocationName = 'Unknown location';
    }
 
-   const { user, authIsReady } = useAuthContext();
+   useEffect(() => {
+      if (user) {
+         setDashboardNavArr(dashboardNav(user.uid));
+      }
+   }, [user]);
 
    useEffect(() => {
       if (dashboardLocations.includes(location.pathname)) {

@@ -6,38 +6,40 @@ import LogoutIcon from '@mui/icons-material/Logout';
 import CalendarViewMonthIcon from '@mui/icons-material/CalendarViewMonth';
 import HomeIcon from '@mui/icons-material/Home';
 
-export const dashboardNav = [
-   {
-      icon: <HomeIcon />,
-      link: '/',
-      label: 'Home',
-   },
-   {
-      icon: <AutoAwesomeMotionIcon />,
-      link: '/tasks',
-      label: 'Tasks',
-   },
-   {
-      icon: <FolderSharedIcon />,
-      link: '/tasks/user',
-      label: 'My tasks',
-   },
-   {
-      icon: <CalendarViewMonthIcon />,
-      link: '/calendar',
-      label: 'Calendar',
-   },
-   {
-      icon: <AddToPhotosIcon />,
-      link: '/tasks/new',
-      label: 'Create new task',
-   },
-   {
-      icon: <PeopleAltIcon />,
-      link: '/team',
-      label: 'Team members',
-   },
-];
+export const dashboardNav = (uid) => {
+   return [
+      {
+         icon: <HomeIcon />,
+         link: '/',
+         label: 'Home',
+      },
+      {
+         icon: <AutoAwesomeMotionIcon />,
+         link: '/tasks',
+         label: 'Tasks',
+      },
+      {
+         icon: <FolderSharedIcon />,
+         link: `/user/${uid}/tasks`,
+         label: 'My tasks',
+      },
+      {
+         icon: <CalendarViewMonthIcon />,
+         link: '/calendar',
+         label: 'Calendar',
+      },
+      {
+         icon: <AddToPhotosIcon />,
+         link: '/tasks/new',
+         label: 'Create new task',
+      },
+      {
+         icon: <PeopleAltIcon />,
+         link: '/users',
+         label: 'Team members',
+      },
+   ];
+};
 
 export const dashboardNavSecondary = [
    {

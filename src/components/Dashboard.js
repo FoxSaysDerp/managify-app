@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useHistory } from 'react-router-dom';
 import { useAuthContext } from '../hooks/useAuthContext';
 
@@ -91,6 +91,9 @@ const Drawer = styled(MuiDrawer, {
 }));
 
 const Dashboard = (props) => {
+   const { children } = props;
+
+   const [dashboardNavArr, setDashboardNavArr] = useState([]);
    const [open, setOpen] = useState(true);
    const toggleDrawer = () => {
       setOpen(!open);
@@ -100,7 +103,11 @@ const Dashboard = (props) => {
 
    const { user } = useAuthContext();
 
-   const { children } = props;
+   useEffect(() => {
+      if (user) {
+         setDashboardNavArr(dashboardNav(user.uid));
+      }
+   }, [user]);
 
    return (
       <>
@@ -172,20 +179,21 @@ const Dashboard = (props) => {
                </Toolbar>
                <Divider />
                <List component="nav">
-                  {dashboardNav.map((item, index) => {
-                     return (
-                        <DashboardListItemButton
-                           component={RouterLink}
-                           to={item.link}
-                           key={index}
-                           sx={{ px: 2, py: 1, m: 1, borderRadius: '18px' }}
-                           exact
-                        >
-                           <ListItemIcon>{item.icon}</ListItemIcon>
-                           <ListItemText primary={item.label} />
-                        </DashboardListItemButton>
-                     );
-                  })}
+                  {user &&
+                     dashboardNavArr.map((item, index) => {
+                        return (
+                           <DashboardListItemButton
+                              component={RouterLink}
+                              to={item.link}
+                              key={index}
+                              sx={{ px: 2, py: 1, m: 1, borderRadius: '18px' }}
+                              exact
+                           >
+                              <ListItemIcon>{item.icon}</ListItemIcon>
+                              <ListItemText primary={item.label} />
+                           </DashboardListItemButton>
+                        );
+                     })}
                   <Divider sx={{ my: 1 }} />
                   {dashboardNavSecondary.map((item, index) => {
                      return (
