@@ -6,6 +6,7 @@ import CalendarPage from '../pages/Calendar';
 import Team from '../pages/Team';
 import Task from '../pages/Task';
 import CreateTask from '../pages/CreateTask';
+import EditTask from '../pages/EditTask';
 import Tasks from '../pages/Tasks';
 import UserProfile from '../pages/UserProfile';
 
@@ -35,6 +36,13 @@ const routes = [
       component: <Task />,
       name: 'Task',
       path: '/tasks/:tid',
+      auth: 'loggedIn',
+      hasDashboard: true,
+   },
+   {
+      component: <EditTask />,
+      name: 'Task',
+      path: '/tasks/:tid/edit',
       auth: 'loggedIn',
       hasDashboard: true,
    },
