@@ -1,10 +1,12 @@
 import { useParams, useHistory } from 'react-router-dom';
 
 import { useDocument } from '../hooks/useDocument';
+import { useFirestore } from '../hooks/useFirestore';
 
 import moment from 'moment';
 
 import {
+   Avatar,
    TextField,
    Input,
    OutlinedInput,
@@ -21,6 +23,7 @@ import {
    Button,
    Typography,
 } from '@mui/material';
+import styled from '@mui/styled-engine-sc';
 import { toast } from 'react-toastify';
 import Spinner from '../components/Spinner';
 import ArchiveIcon from '@mui/icons-material/Archive';
@@ -31,11 +34,34 @@ import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 import deLocale from 'date-fns/locale/de';
 
 import { getColor } from '../util/getColor';
+import { yellow, green } from '@mui/material/colors';
+
+const active = green[400];
+const archived = yellow[800];
+
+const VerticalDivider = styled('span')`
+   display: inline-block;
+   height: 48px;
+   max-height: 100%;
+   width: 1px;
+   margin-top: 8px;
+   background-color: #e0e0e0;
+`;
+
+const TaskState = styled('span')`
+   display: block;
+   width: 8px;
+   height: 8px;
+   border-radius: 50%;
+   background-color: ${(props) => (props.isArchived ? archived : active)};
+   transform: translateY(18px);
+`;
 
 const Task = () => {
    const { tid } = useParams();
    const history = useHistory();
    const { document, error } = useDocument('tasks', tid);
+   const { updateDocument } = useFirestore('tasks');
 
    if (error) {
       toast.error(error, {
@@ -66,7 +92,12 @@ const Task = () => {
       );
    }
 
-   console.log(document);
+   const archiveDocument = () => {
+      updateDocument(tid, { isArchived: true });
+   };
+   const unarchiveDocument = () => {
+      updateDocument(tid, { isArchived: false });
+   };
 
    return (
       <Paper sx={{ p: 2 }}>
@@ -89,15 +120,15 @@ const Task = () => {
                      <InputLabel htmlFor="taskCreator">Task creator</InputLabel>
                      <Input
                         id="taskCreator"
-                        value={document.taskCreator}
+                        value={document.taskCreator.displayName}
                         readOnly
                         startAdornment={
                            <InputAdornment position="start">
-                              {/* <Avatar
-                                 src={getUser(document.taskCreator).photoURL}
-                                 alt={getUser(document.taskCreator).displayName}
+                              <Avatar
+                                 src={document.taskCreator.photoURL}
+                                 alt={document.taskCreator.displayName}
                                  sx={{ maxHeight: 24, maxWidth: 24 }}
-                              /> */}
+                              />
                            </InputAdornment>
                         }
                      />
@@ -109,6 +140,7 @@ const Task = () => {
                      label="Created on"
                      defaultValue={moment
                         .unix(document.taskCreationDate)
+                        .utc()
                         .format('Do MMMM YYYY, HH:mm')}
                      variant="filled"
                      InputProps={{
@@ -117,6 +149,24 @@ const Task = () => {
                   />
                </Grid>
             </Grid>
+            <Box
+               sx={{
+                  margin: '-24px 2px -24px 0',
+                  transform: 'translateX(4px)',
+               }}
+            >
+               <TaskState isArchived={document.isArchived} />
+               <Typography
+                  variant="overline"
+                  sx={{
+                     marginLeft: '14px',
+                     fontStyle: 'italic',
+                     color: document.isArchived ? archived : active,
+                  }}
+               >
+                  {document.isArchived ? 'Archived' : 'Active'}
+               </Typography>
+            </Box>
             <Divider textAlign="right" sx={{ mb: 1, mt: 1 }}>
                <Chip label="DETAILS" />
             </Divider>
@@ -154,6 +204,7 @@ const Task = () => {
                                  label="Chip"
                               />
                            }
+                           IconComponent={null}
                            renderValue={(selected) => {
                               return (
                                  <Box
@@ -164,9 +215,17 @@ const Task = () => {
                                     }}
                                  >
                                     {selected.map((value) => {
-                                       console.log(value);
                                        return (
-                                          <Chip key={value} label={value} />
+                                          <Chip
+                                             avatar={
+                                                <Avatar
+                                                   alt={value.displayName}
+                                                   src={value.photoURL}
+                                                />
+                                             }
+                                             key={value.id}
+                                             label={value.displayName}
+                                          />
                                        );
                                     })}
                                  </Box>
@@ -180,7 +239,8 @@ const Task = () => {
                      >
                         <DatePicker
                            label="Due date"
-                           value={document.dueDate}
+                           value={moment.unix(document.dueDate.seconds)}
+                           onChange={() => console.log('')}
                            readOnly
                            mask="'__.__.____'"
                            renderInput={(params) => <TextField {...params} />}
@@ -198,6 +258,7 @@ const Task = () => {
                                  defaultValue="Low"
                                  readOnly
                                  value={document.taskPriority}
+                                 IconComponent={null}
                                  input={
                                     <OutlinedInput
                                        id="taskPriorityChip"
@@ -232,6 +293,7 @@ const Task = () => {
                                  defaultValue="Open"
                                  readOnly
                                  value={document.taskStatus}
+                                 IconComponent={null}
                                  input={
                                     <OutlinedInput
                                        id="taskStatusChip"
@@ -273,16 +335,30 @@ const Task = () => {
                >
                   Edit
                </Button>
-               <Divider orientation="vertical" flexItem />
-               <Button
-                  type="submit"
-                  variant="contained"
-                  color="error"
-                  sx={{ mt: 3, mb: 2, py: 1, px: 2 }}
-                  startIcon={<ArchiveIcon />}
-               >
-                  Archive
-               </Button>
+               <VerticalDivider />
+               {document.isArchived ? (
+                  <Button
+                     type="submit"
+                     variant="contained"
+                     color="warning"
+                     sx={{ mt: 3, mb: 2, py: 1, px: 2 }}
+                     startIcon={<ArchiveIcon />}
+                     onClick={unarchiveDocument}
+                  >
+                     Unarchive
+                  </Button>
+               ) : (
+                  <Button
+                     type="submit"
+                     variant="contained"
+                     color="warning"
+                     sx={{ mt: 3, mb: 2, py: 1, px: 2 }}
+                     startIcon={<ArchiveIcon />}
+                     onClick={archiveDocument}
+                  >
+                     Archive
+                  </Button>
+               )}
             </Grid>
          </Box>
       </Paper>

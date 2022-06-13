@@ -20,7 +20,7 @@ export const dashboardNav = (uid) => {
       },
       {
          icon: <FolderSharedIcon />,
-         link: `/user/${uid}/tasks`,
+         link: `/users/${uid}`,
          label: 'My tasks',
       },
       {

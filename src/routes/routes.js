@@ -2,12 +2,12 @@ import Login from '../pages/Login';
 import Logout from '../pages/Logout';
 import Signup from '../pages/Signup';
 import Home from '../pages/Home';
-import Calendar from '../pages/Calendar';
+import CalendarPage from '../pages/Calendar';
 import Team from '../pages/Team';
 import Task from '../pages/Task';
 import CreateTask from '../pages/CreateTask';
 import Tasks from '../pages/Tasks';
-import UserTasks from '../pages/UserTasks';
+import UserProfile from '../pages/UserProfile';
 
 const routes = [
    {
@@ -21,13 +21,6 @@ const routes = [
       component: <Tasks />,
       name: 'Tasks',
       path: '/tasks',
-      auth: 'loggedIn',
-      hasDashboard: true,
-   },
-   {
-      component: <UserTasks />,
-      name: 'User Tasks',
-      path: '/users/:uid/tasks',
       auth: 'loggedIn',
       hasDashboard: true,
    },
@@ -46,7 +39,7 @@ const routes = [
       hasDashboard: true,
    },
    {
-      component: <Calendar />,
+      component: <CalendarPage />,
       name: 'Calendar View',
       path: '/calendar',
       auth: 'loggedIn',
@@ -56,6 +49,13 @@ const routes = [
       component: <Team />,
       name: 'Team Members',
       path: '/users',
+      auth: 'loggedIn',
+      hasDashboard: true,
+   },
+   {
+      component: <UserProfile />,
+      name: 'User Tasks',
+      path: '/users/:uid',
       auth: 'loggedIn',
       hasDashboard: true,
    },
