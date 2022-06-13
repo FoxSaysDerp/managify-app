@@ -1,4 +1,7 @@
+import { useState } from 'react';
 import { Link as RouterLink } from 'react-router-dom';
+
+import styled from '@mui/styled-engine-sc';
 
 import { getColor } from '../util/getColor';
 
@@ -13,10 +16,25 @@ import {
    Chip,
    Link,
    Typography,
+   FormControlLabel,
+   FormGroup,
+   Switch,
 } from '@mui/material';
+
+const TaskPriority = styled('span')`
+   display: inline-block;
+   width: 9px;
+   height: 9px;
+   border-radius: 50%;
+   background-color: ${(props) => props.color};
+   margin-left: 6px;
+   transform: translateY(-2px);
+`;
 
 const TaskList = (props) => {
    const { tasks, label } = props;
+
+   const [showArchived, setShowArchved] = useState(false);
 
    const columns = [
       {
@@ -32,20 +50,39 @@ const TaskList = (props) => {
                   sx={{ color: '#000000', textDecoration: 'none' }}
                >
                   {task.value}
-                  <Chip
-                     label={task.row.taskPriority}
-                     size="small"
-                     style={{
-                        backgroundColor: getColor({
-                           value: task.row.taskPriority,
-                           type: 'priority',
-                        }),
-                        marginLeft: 8,
-                     }}
-                  />
+                  {task.row.isArchived && (
+                     <Chip
+                        label="Archived"
+                        size="small"
+                        style={{
+                           backgroundColor: getColor({
+                              value: 'Archived',
+                              type: 'state',
+                           }),
+                           opacity: 0.5,
+                           marginLeft: 8,
+                        }}
+                     />
+                  )}
                </Link>
             );
          },
+      },
+      {
+         field: 'taskPriority',
+         headerName: 'Priority',
+         width: 160,
+         editable: false,
+         renderCell: (priority) => (
+            <Box>
+               <Typography variant="button" sx={{ display: 'inline' }}>
+                  {priority.value}
+               </Typography>
+               <TaskPriority
+                  color={getColor({ value: priority.value, type: 'priority' })}
+               />
+            </Box>
+         ),
       },
       {
          field: 'taskStatus',
@@ -132,7 +169,23 @@ const TaskList = (props) => {
 
    return (
       <Box>
-         <Typography variant="h6">{label}</Typography>
+         <Box sx={{ display: 'flex', justifyContent: 'space-between' }}>
+            <Typography variant="h6">{label}</Typography>
+            <FormGroup>
+               <FormControlLabel
+                  control={
+                     <Switch
+                        defaultChecked
+                        checked={showArchived}
+                        onChange={() => {
+                           setShowArchved(!showArchived);
+                        }}
+                     />
+                  }
+                  label="Show archived"
+               />
+            </FormGroup>
+         </Box>
          <Divider sx={{ mb: 2, mt: 1 }} />
          <div style={{ height: 400, width: '100%' }}>
             {tasks && tasks.length > 0 && (
@@ -141,7 +194,6 @@ const TaskList = (props) => {
                   columns={columns}
                   pageSize={5}
                   rowsPerPageOptions={[5]}
-                  checkboxSelection
                   disableSelectionOnClick
                />
             )}
