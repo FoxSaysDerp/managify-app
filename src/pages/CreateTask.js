@@ -86,8 +86,10 @@ const CreateTask = () => {
 
       let payload = {
          ...data,
+         taskCreator: users.find((el) => el.id === user.uid),
          assignedUsers,
-         dueDate: dueDate.toJSON(),
+         assignedUsersIds: assignedUsers.map((el) => el.id),
+         dueDate: new Date(),
          taskPriority,
          taskStatus,
          isArchived: false,
@@ -102,15 +104,8 @@ const CreateTask = () => {
    };
 
    useEffect(() => {
-      if (documents && documents.length > 0) {
-         setUsers(
-            documents.map((el) => {
-               return {
-                  id: el.id,
-                  displayName: el.displayName,
-               };
-            })
-         );
+      if (documents) {
+         setUsers(documents);
       }
    }, [documents]);
 
@@ -150,25 +145,6 @@ const CreateTask = () => {
                               />
                            </InputAdornment>
                         }
-                     />
-                  </FormControl>
-                  <FormControl variant="standard" sx={{ display: 'none' }}>
-                     <InputLabel htmlFor="taskCreator">Task creator</InputLabel>
-                     <Input
-                        id="taskCreator"
-                        value={user.uid}
-                        startAdornment={
-                           <InputAdornment position="start">
-                              <Avatar
-                                 src={user.photoURL}
-                                 alt={user.displayName}
-                                 sx={{ maxHeight: 24, maxWidth: 24 }}
-                              />
-                           </InputAdornment>
-                        }
-                        {...register('taskCreator', {
-                           required: true,
-                        })}
                      />
                   </FormControl>
                </Grid>
@@ -254,9 +230,17 @@ const CreateTask = () => {
                                        }}
                                     >
                                        {selected.map((value) => {
-                                          console.log(value);
                                           return (
-                                             <Chip key={value} label={value} />
+                                             <Chip
+                                                avatar={
+                                                   <Avatar
+                                                      alt={value.displayName}
+                                                      src={value.photoURL}
+                                                   />
+                                                }
+                                                key={value.id}
+                                                label={value.displayName}
+                                             />
                                           );
                                        })}
                                     </Box>
@@ -265,7 +249,7 @@ const CreateTask = () => {
                               MenuProps={MenuProps}
                            >
                               {users.map((user) => (
-                                 <MenuItem key={user.id} value={user.id}>
+                                 <MenuItem key={user.id} value={user}>
                                     {user.displayName}
                                  </MenuItem>
                               ))}
