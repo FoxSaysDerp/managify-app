@@ -161,6 +161,7 @@ const Task = () => {
                   sx={{
                      marginLeft: '14px',
                      fontStyle: 'italic',
+                     fontWeight: 600,
                      color: document.isArchived ? archived : active,
                   }}
                >

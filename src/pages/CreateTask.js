@@ -36,8 +36,7 @@ import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 import deLocale from 'date-fns/locale/de';
 
-import { TASK_PRIORITY } from '../constants/taskPriority';
-import { TASK_STATUS } from '../constants/taskStatus';
+import { TASK_PRIORITY, TASK_STATUS } from '../constants/taskProperties';
 
 const CreateTask = () => {
    const [isLoading, setIsLoading] = useState(false);
