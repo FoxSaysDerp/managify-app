@@ -38,7 +38,7 @@ const App = () => {
    const pathnameArray = location.pathname.split('/');
 
    const getParamId = () => {
-      if (pathnameArray.at(-1) !== 'tasks' && pathnameArray.at(-1) !== '') {
+      if (pathnameArray.at(-1) !== 'edit' && pathnameArray.at(-1) !== '') {
          return pathnameArray.at(-1);
       } else {
          return pathnameArray.at(-2);
@@ -51,6 +51,7 @@ const App = () => {
       ...dashboardLocations,
       '',
       `/tasks/${paramId}`,
+      `/tasks/${paramId}/edit`,
       `/users/${paramId}`,
    ];
 
