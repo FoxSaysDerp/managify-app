@@ -19,7 +19,6 @@ import {
    Fab,
    Divider,
    IconButton,
-   Badge,
    Tooltip,
    Typography,
 } from '@mui/material';
@@ -136,12 +135,22 @@ const Dashboard = (props) => {
                   )}
                   <div style={{ flexGrow: 1 }} />
                   <IconButton color="inherit">
-                     <Badge badgeContent={4} color="secondary">
-                        <Notifications />
-                     </Badge>
+                     <Notifications />
                   </IconButton>
                   {user && (
-                     <Typography variant="button" sx={{ ml: 4 }}>
+                     <Typography
+                        component={RouterLink}
+                        to={`/users/${user.uid}`}
+                        variant="button"
+                        sx={{
+                           ml: 4,
+                           color: 'inherit',
+                           '&:hover': {
+                              color: '#000',
+                              textDecoration: 'underline',
+                           },
+                        }}
+                     >
                         {user.displayName}
                      </Typography>
                   )}
