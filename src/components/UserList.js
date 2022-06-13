@@ -37,8 +37,8 @@ const UserList = (props) => {
    const [isLoading, setIsLoading] = useState(true);
    const [users, setUsers] = useState([]);
 
-   const { documents } = useCollection('users');
    const { user } = useAuthContext();
+   const { documents } = useCollection('users', '', ['online', 'desc']);
 
    useEffect(() => {
       if (documents && user) {
@@ -100,7 +100,7 @@ const UserList = (props) => {
                                  <Link
                                     component={RouterLink}
                                     color="inherit"
-                                    underline="never"
+                                    underline="none"
                                     sx={{ display: 'inline-block', mr: 1 }}
                                     to={`/users/${userItem.id}`}
                                  >
