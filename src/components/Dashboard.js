@@ -1,5 +1,4 @@
 import { useEffect, useState } from 'react';
-import { useHistory } from 'react-router-dom';
 import { useAuthContext } from '../hooks/useAuthContext';
 
 import styledComp from 'styled-components';
@@ -27,7 +26,7 @@ import {
 import { Menu, ChevronLeft, Notifications, Add } from '@mui/icons-material';
 import StringAvatar from './StringAvatar';
 
-import { NavLink as RouterLink } from 'react-router-dom';
+import { NavLink as RouterNavLink, Link as RouterLink } from 'react-router-dom';
 
 import { dashboardNav, dashboardNavSecondary } from '../constants/dashboardNav';
 import Copyright from './Copyright';
@@ -99,8 +98,6 @@ const Dashboard = (props) => {
       setOpen(!open);
    };
 
-   const history = useHistory();
-
    const { user } = useAuthContext();
 
    useEffect(() => {
@@ -150,11 +147,13 @@ const Dashboard = (props) => {
                   )}
                   <IconButton>
                      {user?.photoURL ? (
-                        <Avatar src={user?.photoURL} />
-                     ) : user ? (
-                        <StringAvatar name={user.displayName} />
+                        <Avatar
+                           component={RouterLink}
+                           to={`/users/${user.uid}`}
+                           src={user?.photoURL}
+                        />
                      ) : (
-                        <StringAvatar name="AAAA" />
+                        <StringAvatar name={user.displayName} />
                      )}
                   </IconButton>
                </Toolbar>
@@ -183,7 +182,7 @@ const Dashboard = (props) => {
                      dashboardNavArr.map((item, index) => {
                         return (
                            <DashboardListItemButton
-                              component={RouterLink}
+                              component={RouterNavLink}
                               to={item.link}
                               key={index}
                               sx={{ px: 2, py: 1, m: 1, borderRadius: '18px' }}
@@ -198,7 +197,7 @@ const Dashboard = (props) => {
                   {dashboardNavSecondary.map((item, index) => {
                      return (
                         <DashboardListItemButton
-                           component={RouterLink}
+                           component={RouterNavLink}
                            to={item.link}
                            key={index}
                            sx={{ px: 2, py: 1, m: 1, borderRadius: '18px' }}
@@ -241,10 +240,14 @@ const Dashboard = (props) => {
          >
             <Tooltip title="Add new task" arrow placement="top-start">
                <Fab
+                  component={RouterNavLink}
                   color="primary"
                   aria-label="add"
-                  onClick={() => {
-                     history.push('/tasks/new');
+                  to="/tasks/new"
+                  sx={{
+                     '&:hover': {
+                        color: '#000',
+                     },
                   }}
                >
                   <Add />
