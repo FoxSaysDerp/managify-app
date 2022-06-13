@@ -168,7 +168,7 @@ const Dashboard = (props) => {
                   }}
                >
                   <Logo
-                     src={require('../assets/images/logo.png')}
+                     src={require('../assets/images/logo2.png')}
                      alt="Managify"
                      style={{ width: '100%', margin: '0 6px' }}
                   />
