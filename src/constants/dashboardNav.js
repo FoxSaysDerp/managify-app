@@ -5,40 +5,41 @@ import PeopleAltIcon from '@mui/icons-material/PeopleAlt';
 import LogoutIcon from '@mui/icons-material/Logout';
 import CalendarViewMonthIcon from '@mui/icons-material/CalendarViewMonth';
 import HomeIcon from '@mui/icons-material/Home';
-import ConstructionIcon from '@mui/icons-material/Construction';
 
-export const dashboardNav = [
-   {
-      icon: <HomeIcon />,
-      link: '/',
-      label: 'Home',
-   },
-   {
-      icon: <AutoAwesomeMotionIcon />,
-      link: '/tasks',
-      label: 'Tasks',
-   },
-   {
-      icon: <FolderSharedIcon />,
-      link: '/tasks/user',
-      label: 'My tasks',
-   },
-   {
-      icon: <CalendarViewMonthIcon />,
-      link: '/calendar',
-      label: 'Calendar',
-   },
-   {
-      icon: <AddToPhotosIcon />,
-      link: '/tasks/new',
-      label: 'Create new task',
-   },
-   {
-      icon: <PeopleAltIcon />,
-      link: '/team',
-      label: 'Team members',
-   },
-];
+export const dashboardNav = (uid) => {
+   return [
+      {
+         icon: <HomeIcon />,
+         link: '/',
+         label: 'Home',
+      },
+      {
+         icon: <AutoAwesomeMotionIcon />,
+         link: '/tasks',
+         label: 'Tasks',
+      },
+      {
+         icon: <FolderSharedIcon />,
+         link: `/users/${uid}`,
+         label: 'My tasks',
+      },
+      {
+         icon: <CalendarViewMonthIcon />,
+         link: '/calendar',
+         label: 'Calendar',
+      },
+      {
+         icon: <AddToPhotosIcon />,
+         link: '/tasks/new',
+         label: 'Create new task',
+      },
+      {
+         icon: <PeopleAltIcon />,
+         link: '/users',
+         label: 'Team members',
+      },
+   ];
+};
 
 export const dashboardNavSecondary = [
    {
@@ -51,17 +52,5 @@ export const dashboardNavSecondary = [
       ),
       link: '/logout',
       label: 'Logout',
-   },
-];
-
-export const dashboardNavDev = [
-   {
-      icon: <ConstructionIcon />,
-      link: '/dev',
-      label: 'Dev Tools',
-      chip: {
-         color: 'error',
-         label: 'DEV',
-      },
    },
 ];

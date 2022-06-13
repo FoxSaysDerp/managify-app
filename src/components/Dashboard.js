@@ -1,4 +1,5 @@
-import React, { useState } from 'react';
+import { useEffect, useState } from 'react';
+import { useAuthContext } from '../hooks/useAuthContext';
 
 import styledComp from 'styled-components';
 
@@ -18,19 +19,15 @@ import {
    Fab,
    Divider,
    IconButton,
-   Badge,
    Tooltip,
-   Chip,
+   Typography,
 } from '@mui/material';
 import { Menu, ChevronLeft, Notifications, Add } from '@mui/icons-material';
+import StringAvatar from './StringAvatar';
 
-import { NavLink as RouterLink } from 'react-router-dom';
+import { NavLink as RouterNavLink, Link as RouterLink } from 'react-router-dom';
 
-import {
-   dashboardNav,
-   dashboardNavSecondary,
-   dashboardNavDev,
-} from '../constants/dashboardNav';
+import { dashboardNav, dashboardNavSecondary } from '../constants/dashboardNav';
 import Copyright from './Copyright';
 
 const drawerWidth = 240;
@@ -39,7 +36,6 @@ const Logo = styledComp.img`
    max-height: 42px;
    width: auto;
 `;
-console.log(theme.palette);
 
 const DashboardListItemButton = styledComp(ListItemButton)`
    &.active {
@@ -93,15 +89,24 @@ const Drawer = styled(MuiDrawer, {
 }));
 
 const Dashboard = (props) => {
+   const { children } = props;
+
+   const [dashboardNavArr, setDashboardNavArr] = useState([]);
    const [open, setOpen] = useState(true);
    const toggleDrawer = () => {
       setOpen(!open);
    };
 
-   const { children } = props;
+   const { user } = useAuthContext();
+
+   useEffect(() => {
+      if (user) {
+         setDashboardNavArr(dashboardNav(user.uid));
+      }
+   }, [user]);
 
    return (
-      <React.Fragment>
+      <>
          <Box sx={{ display: 'flex' }}>
             <AppBar position="absolute" open={open}>
                <Toolbar
@@ -121,21 +126,44 @@ const Dashboard = (props) => {
                   >
                      <Menu />
                   </IconButton>
-                  <Logo
-                     src={require('../assets/images/logo.png')}
-                     alt="Managify"
-                     sx={{ flexGrow: 1 }}
-                  />
+                  {!open && (
+                     <Logo
+                        src={require('../assets/images/logo.png')}
+                        alt="Managify"
+                        sx={{ flexGrow: 1 }}
+                     />
+                  )}
                   <div style={{ flexGrow: 1 }} />
                   <IconButton color="inherit">
-                     <Badge badgeContent={4} color="secondary">
-                        <Notifications />
-                     </Badge>
+                     <Notifications />
                   </IconButton>
-                  <IconButton sx={{ ml: 2 }}>
-                     <Avatar
-                        src={require('../assets/images/placeholders/person-placeholder.jpg')}
-                     />
+                  {user && (
+                     <Typography
+                        component={RouterLink}
+                        to={`/users/${user.uid}`}
+                        variant="button"
+                        sx={{
+                           ml: 4,
+                           color: 'inherit',
+                           '&:hover': {
+                              color: '#000',
+                              textDecoration: 'underline',
+                           },
+                        }}
+                     >
+                        {user.displayName}
+                     </Typography>
+                  )}
+                  <IconButton>
+                     {user?.photoURL ? (
+                        <Avatar
+                           component={RouterLink}
+                           to={`/users/${user.uid}`}
+                           src={user?.photoURL}
+                        />
+                     ) : (
+                        <StringAvatar name={user.displayName} />
+                     )}
                   </IconButton>
                </Toolbar>
             </AppBar>
@@ -148,31 +176,37 @@ const Dashboard = (props) => {
                      px: [1],
                   }}
                >
+                  <Logo
+                     src={require('../assets/images/logo2.png')}
+                     alt="Managify"
+                     style={{ width: '100%', margin: '0 6px' }}
+                  />
                   <IconButton onClick={toggleDrawer}>
                      <ChevronLeft />
                   </IconButton>
                </Toolbar>
                <Divider />
                <List component="nav">
-                  {dashboardNav.map((item, index) => {
-                     return (
-                        <DashboardListItemButton
-                           component={RouterLink}
-                           to={item.link}
-                           key={index}
-                           sx={{ px: 2, py: 1, m: 1, borderRadius: '18px' }}
-                           exact
-                        >
-                           <ListItemIcon>{item.icon}</ListItemIcon>
-                           <ListItemText primary={item.label} />
-                        </DashboardListItemButton>
-                     );
-                  })}
+                  {user &&
+                     dashboardNavArr.map((item, index) => {
+                        return (
+                           <DashboardListItemButton
+                              component={RouterNavLink}
+                              to={item.link}
+                              key={index}
+                              sx={{ px: 2, py: 1, m: 1, borderRadius: '18px' }}
+                              exact
+                           >
+                              <ListItemIcon>{item.icon}</ListItemIcon>
+                              <ListItemText primary={item.label} />
+                           </DashboardListItemButton>
+                        );
+                     })}
                   <Divider sx={{ my: 1 }} />
                   {dashboardNavSecondary.map((item, index) => {
                      return (
                         <DashboardListItemButton
-                           component={RouterLink}
+                           component={RouterNavLink}
                            to={item.link}
                            key={index}
                            sx={{ px: 2, py: 1, m: 1, borderRadius: '18px' }}
@@ -181,33 +215,6 @@ const Dashboard = (props) => {
                            <ListItemIcon>{item.icon}</ListItemIcon>
 
                            <ListItemText primary={item.label} />
-                        </DashboardListItemButton>
-                     );
-                  })}
-                  <Divider sx={{ mt: 5, mb: 1 }} />
-                  {dashboardNavDev.map((item, index) => {
-                     return (
-                        <DashboardListItemButton
-                           component={RouterLink}
-                           to={item.link}
-                           key={index}
-                           sx={{ px: 2, py: 1, m: 1, borderRadius: '18px' }}
-                        >
-                           <ListItemIcon>{item.icon}</ListItemIcon>
-
-                           <ListItemText
-                              primary={item.label}
-                              sx={{
-                                 display: 'inline-block',
-                                 width: 'fit-content',
-                              }}
-                           />
-                           {item.chip && (
-                              <Chip
-                                 label={item.chip.label}
-                                 color={item.chip.color}
-                              />
-                           )}
                         </DashboardListItemButton>
                      );
                   })}
@@ -241,12 +248,22 @@ const Dashboard = (props) => {
             }}
          >
             <Tooltip title="Add new task" arrow placement="top-start">
-               <Fab color="primary" aria-label="add">
+               <Fab
+                  component={RouterNavLink}
+                  color="primary"
+                  aria-label="add"
+                  to="/tasks/new"
+                  sx={{
+                     '&:hover': {
+                        color: '#000',
+                     },
+                  }}
+               >
                   <Add />
                </Fab>
             </Tooltip>
          </Box>
-      </React.Fragment>
+      </>
    );
 };
 

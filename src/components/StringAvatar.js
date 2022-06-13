@@ -20,6 +20,14 @@ const stringToColor = (string) => {
 };
 
 const stringAvatar = (name) => {
+   if (!name) {
+      return {
+         sx: {
+            bgcolor: '#ffb300',
+         },
+         children: 'A',
+      };
+   }
    return {
       sx: {
          bgcolor: stringToColor(name),
@@ -30,7 +38,7 @@ const stringAvatar = (name) => {
 
 const StringAvatar = (props) => {
    const { name } = props;
-   return <Avatar {...stringAvatar(name)} />;
+   return <Avatar {...stringAvatar(name ? name : 'Aaaaaa')} />;
 };
 
 export default StringAvatar;
