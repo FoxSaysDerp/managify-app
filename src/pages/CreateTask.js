@@ -88,7 +88,7 @@ const CreateTask = () => {
          taskCreator: users.find((el) => el.id === user.uid),
          assignedUsers,
          assignedUsersIds: assignedUsers.map((el) => el.id),
-         dueDate: new Date(),
+         dueDate: dueDate._d,
          taskPriority,
          taskStatus,
          isArchived: false,
@@ -156,19 +156,6 @@ const CreateTask = () => {
                      InputProps={{
                         readOnly: true,
                      }}
-                  />
-                  <TextField
-                     id="taskCreationDate"
-                     label="Created on"
-                     value={creationTime}
-                     variant="filled"
-                     InputProps={{
-                        readOnly: true,
-                     }}
-                     sx={{ display: 'none' }}
-                     {...register('taskCreationDate', {
-                        required: true,
-                     })}
                   />
                </Grid>
             </Grid>

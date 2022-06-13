@@ -330,8 +330,9 @@ const Task = () => {
                }}
             >
                <Button
-                  type="submit"
+                  type="button"
                   variant="contained"
+                  onClick={() => history.push(`/tasks/${tid}/edit`)}
                   sx={{ mt: 3, mb: 2, py: 1, px: 5 }}
                >
                   Edit
@@ -339,7 +340,7 @@ const Task = () => {
                <VerticalDivider />
                {document.isArchived ? (
                   <Button
-                     type="submit"
+                     type="button"
                      variant="contained"
                      color="warning"
                      sx={{ mt: 3, mb: 2, py: 1, px: 2 }}
@@ -350,7 +351,7 @@ const Task = () => {
                   </Button>
                ) : (
                   <Button
-                     type="submit"
+                     type="button"
                      variant="contained"
                      color="warning"
                      sx={{ mt: 3, mb: 2, py: 1, px: 2 }}
