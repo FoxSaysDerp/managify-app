@@ -5,7 +5,7 @@ import { Paper } from '@mui/material';
 const Team = () => {
    return (
       <Paper sx={{ maxWidth: '420px' }}>
-         <UserList extended />
+         <UserList />
       </Paper>
    );
 };

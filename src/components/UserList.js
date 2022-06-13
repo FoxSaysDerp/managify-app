@@ -31,17 +31,22 @@ const StatusBadge = styled(Badge)`
    }
 `;
 
-const UserList = (props) => {
-   const { extended } = props;
-
+const UserList = () => {
    const [isLoading, setIsLoading] = useState(true);
    const [users, setUsers] = useState([]);
+   const [online, setOnline] = useState(0);
 
    const { user } = useAuthContext();
-   const { documents } = useCollection('users', '', ['online', 'desc']);
+   const { documents } = useCollection('users', '', [
+      'online',
+      'desc',
+      'displayName',
+      'desc',
+   ]);
 
    useEffect(() => {
       if (documents && user) {
+         setOnline(documents.filter((el) => el.online === true).length);
          setUsers(documents.filter((el) => el.id !== user?.uid));
          setIsLoading(false);
       }
@@ -70,87 +75,67 @@ const UserList = (props) => {
 
    return (
       !isLoading && (
-         <List sx={{ width: '100%' }}>
-            {users.map((userItem, index) => {
-               return (
-                  <ListItem key={index}>
-                     <ListItemAvatar>
-                        <StatusBadge
-                           component={RouterLink}
-                           to={`/users/${userItem.id}`}
-                           variant="dot"
-                           badgeContent={4}
-                           isoffline={!userItem.online ? 1 : undefined}
-                           anchorOrigin={{
-                              vertical: 'bottom',
-                              horizontal: 'right',
-                           }}
-                        >
-                           {userItem?.photoURL ? (
-                              <Avatar src={userItem?.photoURL} />
-                           ) : (
-                              <StringAvatar name={userItem.displayName} />
-                           )}
-                        </StatusBadge>
-                     </ListItemAvatar>
-                     <ListItemText>
-                        <Grid container>
-                           <Grid item sx={{ minWidth: extended && '150px' }}>
-                              <Stack>
-                                 <Link
-                                    component={RouterLink}
-                                    color="inherit"
-                                    underline="none"
-                                    sx={{ display: 'inline-block', mr: 1 }}
-                                    to={`/users/${userItem.id}`}
-                                 >
-                                    {userItem.displayName}
-                                 </Link>
-                                 <Typography
-                                    component={RouterLink}
-                                    sx={{ display: 'block' }}
-                                    color={secondary}
-                                    variant="caption"
-                                    to={`/users/${userItem.id}`}
-                                 >
-                                    {`@${userItem.id.slice(
-                                       3,
-                                       userItem.id.slice.length - 15
-                                    )}...`}
-                                 </Typography>
-                              </Stack>
-                           </Grid>
-                           {extended && (
-                              <Grid
-                                 item
-                                 sx={{
-                                    mx: 3,
-                                    display: 'flex',
-                                    justifyContent: 'center',
-                                    alignItems: 'center',
-                                 }}
-                              >
-                                 <Typography
-                                    sx={{ display: 'inline-block' }}
-                                    color={secondary}
-                                    variant="caption"
-                                 >
-                                    Tasks:
-                                 </Typography>
-                                 <Typography
-                                    sx={{ ml: 1, display: 'inline-block' }}
-                                    variant="body2"
-                                 >
-                                    6
-                                 </Typography>
+         <>
+            <Typography variant="h6" sx={{ pt: 1, pl: 1 }}>
+               Online ({online})
+            </Typography>
+            <List sx={{ width: '100%' }}>
+               {users.map((userItem, index) => {
+                  return (
+                     <ListItem key={index}>
+                        <ListItemAvatar>
+                           <StatusBadge
+                              component={RouterLink}
+                              to={`/users/${userItem.id}`}
+                              variant="dot"
+                              badgeContent={4}
+                              isoffline={!userItem.online ? 1 : undefined}
+                              anchorOrigin={{
+                                 vertical: 'bottom',
+                                 horizontal: 'right',
+                              }}
+                           >
+                              {userItem?.photoURL ? (
+                                 <Avatar src={userItem?.photoURL} />
+                              ) : (
+                                 <StringAvatar name={userItem.displayName} />
+                              )}
+                           </StatusBadge>
+                        </ListItemAvatar>
+                        <ListItemText>
+                           <Grid container>
+                              <Grid item>
+                                 <Stack>
+                                    <Link
+                                       component={RouterLink}
+                                       color="inherit"
+                                       underline="none"
+                                       sx={{ display: 'inline-block', mr: 1 }}
+                                       to={`/users/${userItem.id}`}
+                                    >
+                                       {userItem.displayName}
+                                    </Link>
+                                    <Typography
+                                       component={RouterLink}
+                                       sx={{ display: 'block' }}
+                                       color={secondary}
+                                       variant="caption"
+                                       to={`/users/${userItem.id}`}
+                                    >
+                                       {`@${userItem.id.slice(
+                                          3,
+                                          userItem.id.slice.length - 15
+                                       )}...`}
+                                    </Typography>
+                                 </Stack>
                               </Grid>
-                           )}
-                        </Grid>
-                     </ListItemText>
-                  </ListItem>
-               );
-            })}
-         </List>
+                           </Grid>
+                        </ListItemText>
+                     </ListItem>
+                  );
+               })}
+            </List>
+         </>
       )
    );
 };

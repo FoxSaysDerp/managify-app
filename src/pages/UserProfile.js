@@ -142,9 +142,11 @@ const UserProfile = () => {
                         flexDirection: 'column',
                      }}
                   >
-                     <Typography variant="h3" sx={{ minHeight: '48px' }}>
-                        {documents.length}
-                     </Typography>
+                     {documents && (
+                        <Typography variant="h3" sx={{ minHeight: '48px' }}>
+                           {documents.length}
+                        </Typography>
+                     )}
                      <Typography variant="subtitle2">tasks</Typography>
                   </Grid>
                   <Grid
@@ -166,7 +168,13 @@ const UserProfile = () => {
                            alignItems: 'center',
                         }}
                      >
-                        {moment.unix(document.joined.seconds).from(moment())}
+                        {/* eslint-disable */}
+                        {document.joined
+                           ? moment
+                                .unix(document?.joined?.seconds)
+                                .from(moment())
+                           : '-'}
+                        {/* eslint-enable */}
                      </Typography>
                      <Typography variant="subtitle2">joined</Typography>
                   </Grid>
