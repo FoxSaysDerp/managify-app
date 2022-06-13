@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react';
+import { useHistory } from 'react-router-dom';
 import { projectAuth, projectFirestore } from '../firebase/config';
 import { useAuthContext } from './useAuthContext';
 
@@ -7,6 +8,8 @@ export const useLogout = () => {
    const [error, setError] = useState(null);
    const [isPending, setIsPending] = useState(false);
    const { dispatch, user } = useAuthContext();
+
+   const history = useHistory();
 
    const logout = async () => {
       setError(null);
@@ -25,6 +28,7 @@ export const useLogout = () => {
          if (!isCancelled) {
             setIsPending(false);
             setError(null);
+            history.push('/login');
          }
       } catch (err) {
          if (!isCancelled) {

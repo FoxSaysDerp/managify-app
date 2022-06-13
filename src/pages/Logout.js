@@ -1,5 +1,4 @@
 import { useEffect } from 'react';
-import { useHistory } from 'react-router-dom';
 import { useLogout } from '../hooks/useLogout';
 
 import styled from '@emotion/styled';
@@ -22,16 +21,9 @@ const TextContainer = styled(Typography)`
 `;
 
 const Logout = () => {
-   const history = useHistory();
+   const { logout } = useLogout();
 
-   const { logout, isPending } = useLogout();
-
-   useEffect(() => logout);
-   useEffect(() => {
-      if (!isPending) {
-         history.push('/login');
-      }
-   }, []);
+   useEffect(() => logout, []);
 
    return (
       <LogoutContainer>
