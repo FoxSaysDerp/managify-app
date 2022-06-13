@@ -1,17 +1,22 @@
-import { useHistory, Link as RouterLink } from 'react-router-dom';
+import { Link as RouterLink } from 'react-router-dom';
 
-import { getUser } from '../util/getUser';
 import { getColor } from '../util/getColor';
 
 import { DataGrid } from '@mui/x-data-grid';
 import moment from 'moment';
 
-import { Avatar, Box, Tooltip, Chip, Link } from '@mui/material';
+import {
+   Avatar,
+   Box,
+   Divider,
+   Tooltip,
+   Chip,
+   Link,
+   Typography,
+} from '@mui/material';
 
 const TaskList = (props) => {
-   const { tasks } = props;
-
-   const history = useHistory();
+   const { tasks, label } = props;
 
    const columns = [
       {
@@ -72,19 +77,19 @@ const TaskList = (props) => {
                      gap: 0.5,
                   }}
                >
-                  {assignedUsers.map((item, index) => {
-                     let user = getUser(item);
+                  {assignedUsers.map((user, index) => {
                      return (
                         <Tooltip key={user.id} arrow title={user.displayName}>
                            <Avatar
-                              onClick={() => history.push(`/user/${user.id}`)}
+                              component={RouterLink}
+                              to={`/users/${user.id}`}
                               src={user.photoURL}
                               alt={user.displayName}
                               sx={{
                                  marginLeft: index === 0 ? 0 : '-14px',
                                  zIndex: 1000 - index * index ** index,
                                  '&:hover': {
-                                    cursor: 'pointer',
+                                    color: '#ffffff',
                                  },
                               }}
                            />
@@ -102,25 +107,46 @@ const TaskList = (props) => {
          field: 'dueDate',
          headerName: 'Due Date',
          renderCell: (dueDate) => {
-            return <span>{moment().to(dueDate.value)}</span>;
+            return <span>{moment().to(dueDate)}</span>;
          },
          width: 160,
       },
    ];
 
+   if (tasks?.length === 0) {
+      return (
+         <div
+            style={{
+               height: 400,
+               display: 'flex',
+               justifyContent: 'center',
+               alignItems: 'center',
+            }}
+         >
+            <Typography variant="h4">
+               {'Currently there are no tasks. :('}
+            </Typography>
+         </div>
+      );
+   }
+
    return (
-      <div style={{ height: 400, width: '100%' }}>
-         {tasks && tasks.length > 0 && (
-            <DataGrid
-               rows={tasks}
-               columns={columns}
-               pageSize={5}
-               rowsPerPageOptions={[5]}
-               checkboxSelection
-               disableSelectionOnClick
-            />
-         )}
-      </div>
+      <Box>
+         <Typography variant="h6">{label}</Typography>
+         <Divider sx={{ mb: 2, mt: 1 }} />
+         <div style={{ height: 400, width: '100%' }}>
+            {tasks && tasks.length > 0 && (
+               <DataGrid
+                  rows={tasks}
+                  columns={columns}
+                  pageSize={5}
+                  rowsPerPageOptions={[5]}
+                  checkboxSelection
+                  disableSelectionOnClick
+               />
+            )}
+         </div>
+      </Box>
    );
 };
 
