@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { Link as RouterLink } from 'react-router-dom';
 import { useCollection } from '../hooks/useCollection';
 import { useAuthContext } from '../hooks/useAuthContext';
 
@@ -18,8 +19,7 @@ import {
    Link,
 } from '@mui/material';
 import { grey, green } from '@mui/material/colors';
-import StringAvatar from '../components/StringAvatar';
-import { Link as RouterLink } from 'react-router-dom';
+import UserAvatar from './UserAvatar';
 
 const secondary = grey[500];
 const offline = grey[300];
@@ -72,6 +72,7 @@ const UserList = () => {
          </List>
       );
    }
+   console.log(documents);
 
    return (
       !isLoading && (
@@ -94,12 +95,12 @@ const UserList = () => {
                                  vertical: 'bottom',
                                  horizontal: 'right',
                               }}
+                              sx={{ mr: 1 }}
                            >
-                              {userItem?.photoURL ? (
-                                 <Avatar src={userItem?.photoURL} />
-                              ) : (
-                                 <StringAvatar name={userItem.displayName} />
-                              )}
+                              <UserAvatar
+                                 src={userItem.photoURL}
+                                 name={userItem.displayName}
+                              />
                            </StatusBadge>
                         </ListItemAvatar>
                         <ListItemText>

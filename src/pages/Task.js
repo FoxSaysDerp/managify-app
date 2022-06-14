@@ -6,7 +6,6 @@ import { useFirestore } from '../hooks/useFirestore';
 import moment from 'moment';
 
 import {
-   Avatar,
    TextField,
    Input,
    OutlinedInput,
@@ -27,6 +26,7 @@ import styled from '@mui/styled-engine-sc';
 import { toast } from 'react-toastify';
 import Spinner from '../components/Spinner';
 import ArchiveIcon from '@mui/icons-material/Archive';
+import UserAvatar from '../components/UserAvatar';
 
 import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
@@ -124,9 +124,10 @@ const Task = () => {
                         readOnly
                         startAdornment={
                            <InputAdornment position="start">
-                              <Avatar
+                              <UserAvatar
+                                 avatarOnly
                                  src={document.taskCreator.photoURL}
-                                 alt={document.taskCreator.displayName}
+                                 name={document.taskCreator.displayName}
                                  sx={{ maxHeight: 24, maxWidth: 24 }}
                               />
                            </InputAdornment>
@@ -219,9 +220,16 @@ const Task = () => {
                                        return (
                                           <Chip
                                              avatar={
-                                                <Avatar
-                                                   alt={value.displayName}
+                                                <UserAvatar
+                                                   avatarOnly
+                                                   name={value.displayName}
                                                    src={value.photoURL}
+                                                   sx={{
+                                                      height: '24px',
+                                                      width: '24px',
+                                                      marginLeft: '4px',
+                                                      aspectRatio: '1 / 1',
+                                                   }}
                                                 />
                                              }
                                              key={value.id}

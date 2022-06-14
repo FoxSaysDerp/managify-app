@@ -9,7 +9,6 @@ import MuiDrawer from '@mui/material/Drawer';
 import MuiAppBar from '@mui/material/AppBar';
 import {
    Container,
-   Avatar,
    Box,
    List,
    ListItemIcon,
@@ -23,7 +22,7 @@ import {
    Typography,
 } from '@mui/material';
 import { Menu, ChevronLeft, Notifications, Add } from '@mui/icons-material';
-import StringAvatar from './StringAvatar';
+import UserAvatar from './UserAvatar';
 
 import { NavLink as RouterNavLink, Link as RouterLink } from 'react-router-dom';
 
@@ -154,17 +153,12 @@ const Dashboard = (props) => {
                         {user.displayName}
                      </Typography>
                   )}
-                  <IconButton>
-                     {user?.photoURL ? (
-                        <Avatar
-                           component={RouterLink}
-                           to={`/users/${user.uid}`}
-                           src={user?.photoURL}
-                        />
-                     ) : (
-                        <StringAvatar name={user.displayName} />
-                     )}
-                  </IconButton>
+                  <RouterLink to={`/users/${user.uid}`}>
+                     <UserAvatar
+                        src={user?.photoURL}
+                        name={user?.displayName}
+                     />
+                  </RouterLink>
                </Toolbar>
             </AppBar>
             <Drawer variant="permanent" open={open}>

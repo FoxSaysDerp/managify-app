@@ -7,10 +7,11 @@ import { useCollection } from '../hooks/useCollection';
 import moment from 'moment';
 
 import styled from '@mui/styled-engine-sc';
-import { Paper, Box, Grid, Stack, Typography, Avatar } from '@mui/material';
+import { Paper, Box, Grid, Stack, Typography } from '@mui/material';
 import { grey, green } from '@mui/material/colors';
 
 import { toast } from 'react-toastify';
+import UserAvatar from '../components/UserAvatar';
 import Spinner from '../components/Spinner';
 import TaskList from '../components/TaskList';
 import TaskGraph from '../components/TaskGraph';
@@ -41,7 +42,7 @@ const UserProfile = () => {
             documents.filter((task) => task.assignedUsersIds.includes(uid))
          );
       }
-   }, [documents]);
+   }, [documents, uid]);
 
    if (error) {
       toast.error(error, {
@@ -81,14 +82,19 @@ const UserProfile = () => {
                      <Box>
                         <Grid container spacing={4}>
                            <Grid item xs={3}>
-                              <Avatar
+                              <UserAvatar
                                  src={document.photoURL}
-                                 alt={document.displayName}
+                                 name={document.displayName}
                                  sx={{
                                     width: '100%',
                                     height: 'unset',
+                                    '> div': {
+                                       aspectRatio: '1 / 1',
+                                       width: '100%',
+                                       height: 'auto',
+                                    },
                                  }}
-                                 style={{ aspectRatio: 1 }}
+                                 style={{ aspectRatio: '1 / 1' }}
                               />
                            </Grid>
                            <Grid
