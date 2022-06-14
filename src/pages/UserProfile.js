@@ -41,7 +41,7 @@ const UserProfile = () => {
             documents.filter((task) => task.assignedUsersIds.includes(uid))
          );
       }
-   }, [documents]);
+   }, [documents, uid]);
 
    if (error) {
       toast.error(error, {
