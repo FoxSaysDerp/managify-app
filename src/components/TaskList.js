@@ -177,7 +177,6 @@ const TaskList = (props) => {
                <FormControlLabel
                   control={
                      <Switch
-                        defaultChecked
                         checked={showArchived}
                         onChange={() => {
                            setShowArchived(!showArchived);
