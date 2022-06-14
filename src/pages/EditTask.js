@@ -96,7 +96,7 @@ const EditTask = () => {
       const {
          target: { value },
       } = e;
-      setAssignedUsers(typeof value === 'string' ? value.split(',') : value);
+      setAssignedUsers(value);
    };
 
    const ITEM_HEIGHT = 48;
@@ -142,8 +142,10 @@ const EditTask = () => {
       setIsLoading(true);
 
       await deleteDocument(tid);
+
       if (!response.error) {
          setIsLoading(false);
+         setOpenDialog(false);
          history.push('/tasks');
       }
    };
@@ -185,10 +187,8 @@ const EditTask = () => {
 
    useEffect(() => {
       if (document) {
-         console.log(document);
-
          setAssignedUsers(document.assignedUsers);
-         setDueDate(document.dueDate);
+         setDueDate(new Date(document.dueDate.seconds * 1000));
          setTaskPriority(document.taskPriority);
          setTaskStatus(document.taskStatus);
          setIsArchived(document.isArchived);
@@ -196,7 +196,18 @@ const EditTask = () => {
    }, [document]);
 
    if (!documents || !document) {
-      return <div>Loading...</div>;
+      return (
+         <Paper
+            sx={{
+               display: 'flex',
+               justifyContent: 'center',
+               alignItems: 'center',
+            }}
+         >
+            <p>Loading...</p>
+            <Spinner></Spinner>
+         </Paper>
+      );
    }
 
    return (
