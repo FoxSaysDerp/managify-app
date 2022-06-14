@@ -190,7 +190,7 @@ const TaskList = (props) => {
          <div style={{ height: 400, width: '100%' }}>
             {tasks && tasks.length > 0 && (
                <DataGrid
-                  rows={tasks}
+                  rows={tasks.filter(task => !task.isArchived || showArchived)}
                   columns={columns}
                   pageSize={5}
                   rowsPerPageOptions={[5]}
