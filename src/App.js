@@ -35,26 +35,6 @@ const App = () => {
 
    const { user, authIsReady } = useAuthContext();
 
-   const pathnameArray = location.pathname.split('/');
-
-   const getParamId = () => {
-      if (pathnameArray.at(-1) !== 'edit' && pathnameArray.at(-1) !== '') {
-         return pathnameArray.at(-1);
-      } else {
-         return pathnameArray.at(-2);
-      }
-   };
-   const paramId = getParamId();
-
-   let dashboardLocations = dashboardNavArr.map(({ link }) => link);
-   dashboardLocations = [
-      ...dashboardLocations,
-      '',
-      `/tasks/${paramId}`,
-      `/tasks/${paramId}/edit`,
-      `/users/${paramId}`,
-   ];
-
    let currentLocationName;
    currentLocationName = dashboardNavArr.find(
       (item) => item.link === location.pathname
@@ -70,12 +50,12 @@ const App = () => {
    }, [user]);
 
    useEffect(() => {
-      if (dashboardLocations.includes(location.pathname)) {
+      if (user) {
          setIsDashboardMode(true);
       } else {
          setIsDashboardMode(false);
       }
-   }, [isDashboardMode, location]);
+   }, [user, location]);
 
    return (
       <DashboardContext.Provider
