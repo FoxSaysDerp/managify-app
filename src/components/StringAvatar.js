@@ -37,8 +37,8 @@ const stringAvatar = (name) => {
 };
 
 const StringAvatar = (props) => {
-   const { name } = props;
-   return <Avatar {...stringAvatar(name ? name : 'Aaaaaa')} />;
+   const { name, sx } = props;
+   return <Avatar {...stringAvatar(name ? name : 'Aaaaaa')} sx={sx} />;
 };
 
 export default StringAvatar;
