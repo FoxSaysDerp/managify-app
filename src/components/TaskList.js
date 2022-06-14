@@ -34,7 +34,7 @@ const TaskPriority = styled('span')`
 const TaskList = (props) => {
    const { tasks, label } = props;
 
-   const [showArchived, setShowArchved] = useState(false);
+   const [showArchived, setShowArchived] = useState(true);
 
    const columns = [
       {
@@ -144,7 +144,9 @@ const TaskList = (props) => {
          field: 'dueDate',
          headerName: 'Due Date',
          renderCell: (dueDate) => {
-            return <span>{moment().to(dueDate)}</span>;
+            return (
+               <span>{moment().to(moment.unix(dueDate.value.seconds))}</span>
+            );
          },
          width: 160,
       },
@@ -178,7 +180,7 @@ const TaskList = (props) => {
                         defaultChecked
                         checked={showArchived}
                         onChange={() => {
-                           setShowArchved(!showArchived);
+                           setShowArchived(!showArchived);
                         }}
                      />
                   }
@@ -190,7 +192,9 @@ const TaskList = (props) => {
          <div style={{ height: 400, width: '100%' }}>
             {tasks && tasks.length > 0 && (
                <DataGrid
-                  rows={tasks}
+                  rows={tasks.filter(
+                     (task) => !task.isArchived || showArchived
+                  )}
                   columns={columns}
                   pageSize={5}
                   rowsPerPageOptions={[5]}

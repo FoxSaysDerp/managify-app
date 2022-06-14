@@ -139,7 +139,7 @@ const Task = () => {
                      id="taskCreationDateDisplay"
                      label="Created on"
                      defaultValue={moment
-                        .unix(document.taskCreationDate)
+                        .unix(document.createdAt.seconds)
                         .utc()
                         .format('Do MMMM YYYY, HH:mm')}
                      variant="filled"
