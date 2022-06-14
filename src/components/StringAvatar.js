@@ -20,7 +20,7 @@ const stringToColor = (string) => {
 };
 
 const stringAvatar = (name) => {
-   if (!name) {
+   if (true) {
       return {
          sx: {
             bgcolor: '#ffb300',
