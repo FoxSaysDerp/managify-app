@@ -9,10 +9,8 @@ import { DataGrid } from '@mui/x-data-grid';
 import moment from 'moment';
 
 import {
-   Avatar,
    Box,
    Divider,
-   Tooltip,
    Chip,
    Link,
    Typography,
@@ -20,6 +18,8 @@ import {
    FormGroup,
    Switch,
 } from '@mui/material';
+
+import UserAvatar from './UserAvatar';
 
 const TaskPriority = styled('span')`
    display: inline-block;
@@ -116,21 +116,23 @@ const TaskList = (props) => {
                >
                   {assignedUsers.map((user, index) => {
                      return (
-                        <Tooltip key={user.id} arrow title={user.displayName}>
-                           <Avatar
-                              component={RouterLink}
-                              to={`/users/${user.id}`}
+                        <RouterLink
+                           to={`/users/${user.id}`}
+                           key={user.id}
+                           style={{ marginLeft: index === 0 ? 0 : '-15px' }}
+                        >
+                           <UserAvatar
                               src={user.photoURL}
-                              alt={user.displayName}
+                              name={user.displayName}
                               sx={{
-                                 marginLeft: index === 0 ? 0 : '-14px',
+                                 marginLeft: index === 0 ? 0 : '-15px',
                                  zIndex: 1000 - index * index ** index,
                                  '&:hover': {
                                     color: '#ffffff',
                                  },
                               }}
                            />
-                        </Tooltip>
+                        </RouterLink>
                      );
                   })}
                </Box>
