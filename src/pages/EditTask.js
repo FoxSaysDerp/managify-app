@@ -506,6 +506,14 @@ const EditTask = () => {
                   >
                      {isLoading ? 'Updating...' : 'Update'}
                   </Button>
+                  <Button
+                     type="submit"
+                     variant="contained"
+                     onClick={() => history.goBack()}
+                     sx={{ mt: 3, mb: 2, py: 1, px: 5 }}
+                  >
+                     Cancel
+                  </Button>
                   {isLoading && <Spinner size={32} />}
                   <VerticalDivider />
                   <Button
