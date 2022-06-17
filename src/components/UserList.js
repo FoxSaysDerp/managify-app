@@ -95,7 +95,12 @@ const UserList = () => {
                                  vertical: 'bottom',
                                  horizontal: 'right',
                               }}
-                              sx={{ mr: 1 }}
+                              sx={{
+                                 mr: 1,
+                                 '> span': {
+                                    transform: 'translate(-5px, -5px)',
+                                 },
+                              }}
                            >
                               <UserAvatar
                                  src={userItem.photoURL}
