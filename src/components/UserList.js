@@ -72,7 +72,7 @@ const UserList = () => {
          </List>
       );
    }
-   console.log(documents);
+   documents;
 
    return (
       !isLoading && (

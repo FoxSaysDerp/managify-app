@@ -19,7 +19,7 @@ export const useDocument = (collection, id) => {
             }
          },
          (err) => {
-            console.log(err.message);
+            err.message;
             setError('Failed to retrieve the document.');
          }
       );
