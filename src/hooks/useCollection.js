@@ -11,7 +11,7 @@ export const useCollection = (collection, _query, _orderBy) => {
       let ref = projectFirestore.collection(collection);
       if (query?.length > 0) {
          if (query[0] && query[0] instanceof Array) {
-            query.forEach(q => ref = ref.where(...q));
+            query.forEach((q) => (ref = ref.where(...q)));
          } else {
             ref = ref.where(...query);
          }
@@ -31,7 +31,7 @@ export const useCollection = (collection, _query, _orderBy) => {
             setError(null);
          },
          (error) => {
-            console.log(error);
+            error;
             setError('Could not fetch the data');
          }
       );

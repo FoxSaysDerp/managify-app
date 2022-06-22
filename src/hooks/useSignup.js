@@ -51,7 +51,7 @@ export const useSignup = () => {
 
             // Will be casted as 'true', no idea why
             setIsFulfilled(false);
-            console.log(isFulfilled);
+            isFulfilled;
          }
       } catch (err) {
          if (!isCancelled) {

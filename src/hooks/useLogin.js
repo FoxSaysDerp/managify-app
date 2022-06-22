@@ -14,7 +14,7 @@ export const useLogin = () => {
       setIsPending(true);
 
       try {
-         console.log('auth');
+         ('auth');
          const res = await projectAuth.signInWithEmailAndPassword(
             email,
             password
@@ -27,7 +27,7 @@ export const useLogin = () => {
          });
 
          if (!isCancelled) {
-            console.log('!isCancelled');
+            ('!isCancelled');
             setIsPending(false);
             setError(null);
 

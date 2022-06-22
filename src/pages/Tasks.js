@@ -12,7 +12,7 @@ const Tasks = () => {
    useEffect(() => {
       if (documents && documents.length > 0) {
          setTasks(documents);
-         console.log(tasks);
+         tasks;
       }
    }, [documents]);
 

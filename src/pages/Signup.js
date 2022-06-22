@@ -42,7 +42,7 @@ const Signup = () => {
    const ALLOWED_TYPES = ['image/jpeg', 'image/jpg', 'image/png'];
 
    const onSubmit = async (data) => {
-      console.log(data);
+      data;
       if (Object.values(data).every((item) => typeof item !== 'undefined')) {
          await signup(
             data.email,

@@ -35,10 +35,10 @@ const Login = () => {
    const { login, isPending, error, isFulfilled } = useLogin();
 
    const onSubmit = async (data) => {
-      console.log(data);
+      data;
       await login(data.email, data.password);
 
-      console.log('Login.js - isFulfilled', isFulfilled);
+      'Login.js - isFulfilled', isFulfilled;
 
       if (isFulfilled) {
          history.push('/');

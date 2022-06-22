@@ -124,7 +124,7 @@ const EditTask = () => {
          isArchived: false,
       };
 
-      console.log(payload);
+      payload;
 
       await updateDocument(tid, payload);
 
